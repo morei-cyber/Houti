@@ -91,6 +91,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
   }
 
   .era-badge {
@@ -117,6 +118,23 @@
     gap: 6px;
     font-variant-numeric: tabular-nums;
   }
+
+  .save-badge {
+    font-size: 11px;
+    color: var(--ink-faint);
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+    border-radius: 2px;
+    background: none;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .save-badge:hover { border-color: var(--line-bright); color: var(--parchment-dim); }
+  .save-badge.flash { color: var(--success); border-color: #4c5f3d; }
 
   /* ===== tab nav ===== */
   .tab-nav {
@@ -304,7 +322,7 @@
   .log-entry .who { color: var(--amber-dim); flex-shrink: 0; }
   .log-entry:last-child { border-bottom: none; }
 
-  /* ===== upgrade list (shared style for workshop / upgrades-tier2) ===== */
+  /* ===== upgrade list (shared style for workshop / upgrades-tier2 / tier3) ===== */
   .upgrade-list { display: flex; flex-direction: column; gap: 10px; }
 
   .upgrade {
@@ -375,6 +393,24 @@
     display: block; margin-top: 1px; letter-spacing: 0.08em;
   }
 
+  /* buy-quantity toggle */
+  .buy-qty-toggle {
+    display: flex; gap: 4px; margin-bottom: 12px;
+  }
+  .buy-qty-btn {
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--line);
+    color: var(--ink-faint);
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .buy-qty-btn:hover { border-color: var(--line-bright); color: var(--parchment-dim); }
+  .buy-qty-btn.active { color: var(--amber-bright); border-color: var(--amber-dim); background: rgba(217,164,65,0.08); }
+
   /* locked upgrade tier badge */
   .tier-lock-note {
     font-size: 11px;
@@ -393,6 +429,7 @@
   .milestone-row.reached { color: var(--success); }
   .milestone-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-faint); flex-shrink: 0; }
   .milestone-row.reached .milestone-dot { background: var(--success); }
+  .milestone-scroll { max-height: 280px; overflow-y: auto; padding-right: 4px; }
 
   /* ===== prestige tab ===== */
   .prestige-hero {
@@ -455,15 +492,21 @@
 
   .prestige-history {
     margin-top: 8px;
+    max-height: 320px;
+    overflow-y: auto;
   }
   .prestige-history-row {
     display: flex; justify-content: space-between;
     font-size: 12px; color: var(--parchment-dim);
     padding: 6px 0; border-bottom: 1px dashed rgba(61,48,37,0.6);
     font-variant-numeric: tabular-nums;
+    gap: 10px;
   }
   .prestige-history-row:last-child { border-bottom: none; }
-  .prestige-history-row .idx { color: var(--ink-faint); }
+  .prestige-history-row .idx { color: var(--ink-faint); flex-shrink: 0; }
+
+  /* ===== prestige upgrade shop (spend stones permanently) ===== */
+  .stone-shop-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
 
   /* ===== investment tab ===== */
   .asset-card {
@@ -489,6 +532,7 @@
   .risk-tag.low { color: var(--success); border-color: #4c5f3d; }
   .risk-tag.mid { color: var(--amber); border-color: var(--line-bright); }
   .risk-tag.high { color: var(--danger); border-color: #6b3d33; }
+  .risk-tag.extreme { color: var(--violet-bright); border-color: #4a3f63; }
 
   .asset-price-row {
     font-family: 'Shippori Mincho', serif;
@@ -575,6 +619,46 @@
   .achv-name { font-size: 13px; font-weight: 700; color: var(--parchment); }
   .achv-desc { font-size: 11px; color: var(--ink-faint); margin-top: 2px; line-height: 1.5; }
 
+  /* ===== settings / save management ===== */
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row-label { font-size: 13px; color: var(--parchment); font-weight: 700; }
+  .settings-row-desc { font-size: 11px; color: var(--ink-faint); margin-top: 3px; max-width: 460px; line-height: 1.6; }
+  .settings-btn {
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--line-bright);
+    color: var(--parchment-dim);
+    font-size: 12px;
+    padding: 9px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .settings-btn:hover { border-color: var(--amber-dim); color: var(--amber-bright); }
+  .settings-btn.danger { border-color: #6b3d33; color: var(--danger); }
+  .settings-btn.danger:hover { border-color: var(--danger); }
+  .settings-textarea {
+    width: 100%;
+    min-height: 90px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    color: var(--parchment-dim);
+    font-family: monospace;
+    font-size: 11px;
+    padding: 10px;
+    border-radius: 2px;
+    resize: vertical;
+    margin-top: 10px;
+  }
+  .settings-import-wrap { width: 100%; margin-top: 10px; display: none; }
+  .settings-import-wrap.show { display: block; }
+  .settings-import-actions { display: flex; gap: 8px; margin-top: 8px; }
+
   /* ===== offline modal ===== */
   .modal-overlay {
     position: fixed; inset: 0;
@@ -605,8 +689,13 @@
     font-family: 'Shippori Mincho', serif;
     font-size: 30px; font-weight: 800;
     color: var(--amber-bright);
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     font-variant-numeric: tabular-nums;
+  }
+  .modal-box .modal-cap-note {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
   }
   .modal-close-btn {
     background: linear-gradient(180deg, var(--amber), #b8873a);
@@ -652,6 +741,7 @@
     <div class="masthead-right">
       <div class="stone-badge" id="stone-badge-header">💎 賢者の石 0個</div>
       <div class="era-badge" id="era-badge">見習いの間</div>
+      <button class="save-badge" id="save-badge" title="今すぐ手動でセーブする">💾 保存済み</button>
     </div>
   </header>
 
@@ -660,6 +750,7 @@
     <button class="tab-btn" data-tab="prestige">転生の間<span class="tab-dot" id="prestige-dot"></span></button>
     <button class="tab-btn" data-tab="invest">錬金取引所<span class="tab-dot" id="invest-dot"></span></button>
     <button class="tab-btn" data-tab="achv">実績</button>
+    <button class="tab-btn" data-tab="settings">設定</button>
   </nav>
 
   <!-- ===== TAB: workshop ===== -->
@@ -722,7 +813,7 @@
 
         <div class="panel" style="margin-top:20px;">
           <div class="log-title" style="margin-bottom:14px;">到達記録</div>
-          <div id="milestone-list"></div>
+          <div class="milestone-scroll" id="milestone-list"></div>
         </div>
       </div>
 
@@ -733,6 +824,12 @@
             <span class="count" id="total-owned">保有 0</span>
           </div>
           <div class="panel-desc">精霊粉を使って助手や道具を揃え、るつぼを離れても粉が生成され続けるようにする。</div>
+          <div class="buy-qty-toggle" id="buy-qty-toggle">
+            <button class="buy-qty-btn active" data-qty="1">×1</button>
+            <button class="buy-qty-btn" data-qty="10">×10</button>
+            <button class="buy-qty-btn" data-qty="25">×25</button>
+            <button class="buy-qty-btn" data-qty="max">MAX</button>
+          </div>
           <div class="upgrade-list" id="upgrade-list"></div>
         </div>
 
@@ -744,6 +841,15 @@
           <div class="panel-desc">工房の設備がある程度揃うと、さらに深い強化が解放される。所持数に応じて生産効率そのものを底上げする。</div>
           <div class="upgrade-list" id="tier2-list"></div>
         </div>
+
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-header">
+            <h2>大秘儀</h2>
+            <span class="count" id="tier3-owned">保有 0</span>
+          </div>
+          <div class="panel-desc">工房が長く続くほど、さらに奥にある大秘儀が姿を現す。効果は乗算で積み重なり、超長期の周回を支える。</div>
+          <div class="upgrade-list" id="tier3-list"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -751,46 +857,57 @@
   <!-- ===== TAB: prestige ===== -->
   <section class="tab-panel" id="tab-prestige">
     <div class="grid">
-      <div class="panel prestige-hero">
-        <svg class="prestige-stone-visual" viewBox="0 0 120 120">
-          <defs>
-            <radialGradient id="stoneGlow" cx="50%" cy="40%" r="65%">
-              <stop offset="0%" stop-color="#c9b8ea" stop-opacity="0.9"/>
-              <stop offset="60%" stop-color="#8d7bb0" stop-opacity="0.4"/>
-              <stop offset="100%" stop-color="#8d7bb0" stop-opacity="0"/>
-            </radialGradient>
-            <linearGradient id="stoneBody" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#b7a4dd"/>
-              <stop offset="50%" stop-color="#8d7bb0"/>
-              <stop offset="100%" stop-color="#5c4d78"/>
-            </linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="56" fill="url(#stoneGlow)"/>
-          <polygon points="60,18 90,45 78,98 42,98 30,45" fill="url(#stoneBody)" stroke="#c9b8ea" stroke-width="1.5"/>
-          <polygon points="60,18 90,45 60,58" fill="#c9b8ea" opacity="0.3"/>
-          <polygon points="60,18 30,45 60,58" fill="#f4f0fb" opacity="0.15"/>
-        </svg>
+      <div>
+        <div class="panel prestige-hero">
+          <svg class="prestige-stone-visual" viewBox="0 0 120 120">
+            <defs>
+              <radialGradient id="stoneGlow" cx="50%" cy="40%" r="65%">
+                <stop offset="0%" stop-color="#c9b8ea" stop-opacity="0.9"/>
+                <stop offset="60%" stop-color="#8d7bb0" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#8d7bb0" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="stoneBody" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#b7a4dd"/>
+                <stop offset="50%" stop-color="#8d7bb0"/>
+                <stop offset="100%" stop-color="#5c4d78"/>
+              </linearGradient>
+            </defs>
+            <circle cx="60" cy="60" r="56" fill="url(#stoneGlow)"/>
+            <polygon points="60,18 90,45 78,98 42,98 30,45" fill="url(#stoneBody)" stroke="#c9b8ea" stroke-width="1.5"/>
+            <polygon points="60,18 90,45 60,58" fill="#c9b8ea" opacity="0.3"/>
+            <polygon points="60,18 30,45 60,58" fill="#f4f0fb" opacity="0.15"/>
+          </svg>
 
-        <div class="prestige-big-num" id="prestige-stone-count">0</div>
-        <div class="prestige-label">保有する賢者の石</div>
+          <div class="prestige-big-num" id="prestige-stone-count">0</div>
+          <div class="prestige-label">保有する賢者の石</div>
 
-        <div class="prestige-detail">現在の生産倍率 <strong id="prestige-current-mult">×1.00</strong></div>
-        <div class="prestige-detail">転生すると得られる石 <strong id="prestige-would-gain">+0</strong> 個</div>
-        <div class="prestige-detail">転生後の倍率 <strong id="prestige-next-mult">×1.00</strong></div>
+          <div class="prestige-detail">現在の生産倍率 <strong id="prestige-current-mult">×1.00</strong></div>
+          <div class="prestige-detail">転生すると得られる石 <strong id="prestige-would-gain">+0</strong> 個</div>
+          <div class="prestige-detail">転生後の倍率 <strong id="prestige-next-mult">×1.00</strong></div>
 
-        <button class="prestige-btn" id="prestige-btn" disabled>精霊粉を賢者の石に変える</button>
-        <div class="prestige-warn">
-          転生すると精霊粉・設備の所持数はすべて0に戻るが、賢者の石は永続し、すべての生産量に倍率として掛かり続ける。<br>
-          石は「これまでに稼いだ精霊粉の総量」から算出されるため、稼ぐほど有利になる。
+          <button class="prestige-btn" id="prestige-btn" disabled>精霊粉を賢者の石に変える</button>
+          <div class="prestige-warn">
+            転生すると精霊粉・工房設備・秘伝・大秘儀の所持数はすべて0に戻るが、賢者の石と刻印術（下記）は永続し、すべての生産量に倍率として掛かり続ける。<br>
+            石は「これまでに稼いだ精霊粉の総量」から算出されるため、稼ぐほど有利になる。株の保有は転生をまたいで引き継がれる。
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-header"><h2>転生の記録</h2></div>
+          <div class="panel-desc">工房を何度作り直したか、その軌跡。</div>
+          <div class="prestige-history" id="prestige-history-list">
+            <div class="prestige-history-row"><span class="idx">—</span><span>まだ転生していない</span></div>
+          </div>
         </div>
       </div>
 
       <div class="panel">
-        <div class="panel-header"><h2>転生の記録</h2></div>
-        <div class="panel-desc">工房を何度作り直したか、その軌跡。</div>
-        <div class="prestige-history" id="prestige-history-list">
-          <div class="prestige-history-row"><span class="idx">—</span><span>まだ転生していない</span></div>
+        <div class="panel-header">
+          <h2>刻印術</h2>
+          <span class="count" id="stoneshop-owned">保有 0</span>
         </div>
+        <div class="panel-desc">賢者の石そのものを消費して、転生しても消えない永続強化を刻む。ここで使った石は生産倍率の計算からは減らない — 石の「所持数」自体は変わらず、刻印の代金として消費されるのは石の一部という設定。じっくり貯めてから使うのが基本。</div>
+        <div class="stone-shop-list" id="stoneshop-list"></div>
       </div>
     </div>
   </section>
@@ -799,7 +916,7 @@
   <section class="tab-panel" id="tab-invest">
     <div class="panel" style="margin-bottom:20px;">
       <div class="panel-header"><h2>錬金取引所</h2></div>
-      <div class="panel-desc">精霊粉を株に変え、値動きを見ながら保有する。株価は上下し続けるが、保有株数は配当を生み、放置中も静かに精霊粉へと還元される。値動きはリスクが高いほど大きい。</div>
+      <div class="panel-desc">精霊粉を株に変え、値動きを見ながら保有する。株価は上下し続けるが、保有株数は配当を生み、放置中も静かに精霊粉へと還元される。値動きはリスクが高いほど大きい。保有株は転生後も残る。</div>
       <div id="asset-list"></div>
       <div class="dividend-row">
         <span>配当合計</span>
@@ -820,6 +937,63 @@
     </div>
   </section>
 
+  <!-- ===== TAB: settings ===== -->
+  <section class="tab-panel" id="tab-settings">
+    <div class="panel">
+      <div class="panel-header"><h2>セーブデータ</h2></div>
+      <div class="panel-desc">このブラウザに自動保存されている。同じブラウザ・同じ端末でこのページを開けば続きから遊べる。他の端末に移したい場合や、念のためのバックアップにはエクスポートを使う。</div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">自動保存</div>
+          <div class="settings-row-desc" id="autosave-status">10秒ごとに自動保存中。最終保存: —</div>
+        </div>
+        <button class="settings-btn" id="manual-save-btn">今すぐ保存</button>
+      </div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">エクスポート（書き出し）</div>
+          <div class="settings-row-desc">現在の進行状況をテキストとして書き出す。コピーして保管するか、テキストファイルとして保存しておける。</div>
+        </div>
+        <button class="settings-btn" id="export-btn">書き出す</button>
+      </div>
+      <div id="export-wrap" class="settings-import-wrap">
+        <textarea class="settings-textarea" id="export-area" readonly></textarea>
+      </div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">インポート（読み込み）</div>
+          <div class="settings-row-desc">書き出したデータを貼り付けて読み込む。現在の進行状況は上書きされるので注意。</div>
+        </div>
+        <button class="settings-btn" id="import-btn">読み込む</button>
+      </div>
+      <div id="import-wrap" class="settings-import-wrap">
+        <textarea class="settings-textarea" id="import-area" placeholder="ここにセーブデータを貼り付け"></textarea>
+        <div class="settings-import-actions">
+          <button class="settings-btn" id="import-confirm-btn">この内容で読み込む</button>
+          <button class="settings-btn" id="import-cancel-btn">キャンセル</button>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">留守中の進行の上限</div>
+          <div class="settings-row-desc" id="offline-cap-desc">現在の上限: 8時間ぶん。放置報酬はこの時間で頭打ちになる。</div>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">工房を最初からやり直す</div>
+          <div class="settings-row-desc">賢者の石・刻印術・株の保有を含め、すべてのデータを削除する。取り消せない。</div>
+        </div>
+        <button class="settings-btn danger" id="reset-btn">全データを削除</button>
+      </div>
+    </div>
+  </section>
+
   <footer class="note">クリック一つ、蒸留一つ。工房はゆっくりと育っていく。</footer>
 </div>
 
@@ -829,6 +1003,7 @@
     <h3>留守中の記録</h3>
     <div class="modal-sub" id="offline-sub">工房は静かに動き続けていた。</div>
     <div class="modal-gain" id="offline-gain">+0 粒</div>
+    <div class="modal-cap-note" id="offline-cap-note"></div>
     <button class="modal-close-btn" id="offline-close-btn">工房に戻る</button>
   </div>
 </div>
@@ -837,96 +1012,150 @@
 (function () {
   "use strict";
 
-  /* ================= state ================= */
-  const state = {
-    essence: 0,
-    totalEarned: 0,
-    perClick: 1,
-    lastTick: Date.now(),
-    stones: 0,
-    prestigeCount: 0,
-    prestigeHistory: [], // {n, stonesGained, totalAtPrestige}
-  };
+  const SAVE_KEY = "alchemist_crucible_save_v2";
+  const SAVE_VERSION = 2;
+  const MAX_OFFLINE_SECONDS = 8 * 3600; // オフライン進行の上限: 8時間ぶん
+
+  /* ================= definitions ================= */
+  // tier1: 工房の設備
+  const upgradeDefs = [
+    { id: "sprite",      name: "小さな精霊",     icon: "🌱", baseCost: 15,        baseYield: 0.2 },
+    { id: "apprentice",  name: "見習い助手",     icon: "🧑‍🎓", baseCost: 100,       baseYield: 1 },
+    { id: "bellows",     name: "自動ふいご",     icon: "🔥", baseCost: 550,       baseYield: 5 },
+    { id: "still",       name: "蒸留装置",       icon: "⚗️", baseCost: 3000,      baseYield: 24 },
+    { id: "golem",       name: "石のゴーレム",   icon: "🗿", baseCost: 18000,     baseYield: 120 },
+    { id: "observatory", name: "星見の塔",       icon: "🔭", baseCost: 120000,    baseYield: 640 },
+    { id: "library",     name: "禁書図書館",     icon: "📚", baseCost: 900000,    baseYield: 3600 },
+    { id: "portal",      name: "異界の門",       icon: "🌌", baseCost: 7000000,   baseYield: 21000 },
+    { id: "leviathan",   name: "深海のレヴィアタン", icon: "🐋", baseCost: 55000000, baseYield: 130000 },
+    { id: "sunforge",    name: "太陽の鍛冶場",   icon: "☀️", baseCost: 450000000, baseYield: 820000 },
+  ];
+
+  // tier2: 秘伝の強化(unlockAt=工房設備合計所持数, 効果=生産全体への加算%乗算)
+  const tier2Defs = [
+    { id: "t2_recipe",  name: "秘伝の配合書",   icon: "📜", unlockAt: 10,  baseCost: 800,        costMult: 3.2, bonusPct: 0.10, max: 5 },
+    { id: "t2_furnace", name: "業火の炉",       icon: "🔺", unlockAt: 25,  baseCost: 6000,       costMult: 3.4, bonusPct: 0.14, max: 5 },
+    { id: "t2_circle",  name: "召喚の魔法陣",   icon: "⭕", unlockAt: 50,  baseCost: 40000,      costMult: 3.6, bonusPct: 0.18, max: 5 },
+    { id: "t2_codex",   name: "深淵の古文書",   icon: "📖", unlockAt: 90,  baseCost: 300000,     costMult: 3.8, bonusPct: 0.24, max: 5 },
+    { id: "t2_prism",   name: "虹彩の水晶柱",   icon: "🔮", unlockAt: 140, baseCost: 2200000,    costMult: 4.0, bonusPct: 0.30, max: 5 },
+    { id: "t2_engine",  name: "永久機関の芯",   icon: "⚙️", unlockAt: 200, baseCost: 16000000,   costMult: 4.2, bonusPct: 0.38, max: 5 },
+  ];
+
+  // tier3: 大秘儀(unlockAt=秘伝の合計所持数, 効果=乗算そのものへの追加倍率、重ねがけで乗算)
+  const tier3Defs = [
+    { id: "t3_hourglass", name: "無限の砂時計", icon: "⏳", unlockAt: 6,  baseCost: 5e6,   costMult: 6.0, multBonus: 0.25, max: 3 },
+    { id: "t3_phoenix",   name: "不死鳥の灰",   icon: "🔥", unlockAt: 12, baseCost: 8e7,   costMult: 6.5, multBonus: 0.35, max: 3 },
+    { id: "t3_worldtree", name: "世界樹の種",   icon: "🌳", unlockAt: 18, baseCost: 1.2e9, costMult: 7.0, multBonus: 0.50, max: 3 },
+  ];
+
+  // 刻印術: 賢者の石で買う永続強化(転生しても消えない)
+  const stoneShopDefs = [
+    { id: "ss_click",   name: "指先の刻印",     icon: "👆", desc: "クリック1回の獲得量が+50%される。", baseCost: 3, costMult: 2.2, max: 8, effect: "clickPct", amount: 0.5 },
+    { id: "ss_auto",    name: "永劫の刻印",     icon: "♾️", desc: "自動生産量が+8%される。", baseCost: 2, costMult: 1.9, max: 15, effect: "autoPct", amount: 0.08 },
+    { id: "ss_offline", name: "眠りの刻印",     icon: "🌙", desc: "留守中の進行上限が+2時間のびる。", baseCost: 5, costMult: 2.5, max: 6, effect: "offlineHours", amount: 2 },
+    { id: "ss_start",   name: "初期化の刻印",   icon: "🌀", desc: "転生直後、工房設備『小さな精霊』を5体所持した状態から始められる。", baseCost: 12, costMult: 3.0, max: 4, effect: "startSprites", amount: 5 },
+    { id: "ss_divi",    name: "豊穣の刻印",     icon: "🪙", desc: "株の配当が+15%される。", baseCost: 6, costMult: 2.3, max: 8, effect: "dividendPct", amount: 0.15 },
+  ];
+
+  const milestoneDefs = [
+    { at: 50,          label: "50粒 — 最初の一握り" },
+    { at: 500,         label: "500粒 — るつぼが温まってきた" },
+    { at: 5000,        label: "5,000粒 — 見習いを卒業" },
+    { at: 50000,       label: "50,000粒 — 工房長と呼ばれる" },
+    { at: 500000,      label: "500,000粒 — 錬金術師の域" },
+    { at: 5000000,     label: "5,000,000粒 — 伝説の工房" },
+    { at: 50000000,    label: "5,000万粒 — 王室御用達" },
+    { at: 500000000,   label: "5億粒 — 大陸に名が轟く" },
+    { at: 5000000000,  label: "50億粒 — 賢者の域を超える" },
+    { at: 50000000000, label: "500億粒 — 神話の一頁" },
+  ];
+
+  const eraDefs = [
+    { at: 0,           label: "見習いの間" },
+    { at: 500,         label: "工房の朝" },
+    { at: 5000,        label: "職人の間" },
+    { at: 50000,       label: "深夜の蒸留室" },
+    { at: 500000,      label: "星読みの塔" },
+    { at: 5000000,     label: "禁書の書庫" },
+    { at: 50000000,    label: "異界の回廊" },
+    { at: 500000000,   label: "深海の祭壇" },
+    { at: 5000000000,  label: "太陽の鍛冶場" },
+  ];
+
+  const assetDefs = [
+    { id: "low",  name: "地脈の欠片", icon: "🪨", risk: "low",  riskLabel: "低リスク",
+      price: 10, target: 12,  speed: 0.02,  vol: 0.010, dividendPerShare: 0.02 },
+    { id: "mid",  name: "月光結晶",   icon: "🔷", risk: "mid",  riskLabel: "中リスク",
+      price: 10, target: 20,  speed: 0.012, vol: 0.035, dividendPerShare: 0.07 },
+    { id: "high", name: "混沌の残滓", icon: "🌀", risk: "high", riskLabel: "高リスク",
+      price: 10, target: 45,  speed: 0.006, vol: 0.09,  dividendPerShare: 0.20 },
+    { id: "ext",  name: "虚空の涙",   icon: "🌑", risk: "extreme", riskLabel: "極リスク",
+      price: 10, target: 90,  speed: 0.003, vol: 0.16,  dividendPerShare: 0.55 },
+  ];
+
+  const achievementDefs = [
+    { id: "a_first_click", name: "はじめの一混ぜ", desc: "初めてるつぼをクリックした。", icon: "👆", check: s => s.totalEarned > 0 },
+    { id: "a_1k", name: "駆け出し", desc: "累計1,000粒を稼いだ。", icon: "🌟", check: s => s.totalEarned >= 1000 },
+    { id: "a_1m", name: "熟練の証", desc: "累計1,000,000粒を稼いだ。", icon: "✨", check: s => s.totalEarned >= 1000000 },
+    { id: "a_1b", name: "伝説の錬金術師", desc: "累計10億粒を稼いだ。", icon: "🏆", check: s => s.totalEarned >= 1e9 },
+    { id: "a_1t", name: "神話級の工房", desc: "累計1兆粒を稼いだ。", icon: "👑", check: s => s.totalEarned >= 1e12 },
+    { id: "a_first_upgrade", name: "最初の仲間", desc: "設備を1つ購入した。", icon: "🤝", check: (s, ctx) => ctx.totalUpgradeOwned >= 1 },
+    { id: "a_10_upgrade", name: "小さな工房", desc: "設備を合計10個所有した。", icon: "🏠", check: (s, ctx) => ctx.totalUpgradeOwned >= 10 },
+    { id: "a_100_upgrade", name: "大工房", desc: "設備を合計100個所有した。", icon: "🏛️", check: (s, ctx) => ctx.totalUpgradeOwned >= 100 },
+    { id: "a_all_types", name: "揃い踏み", desc: "全種類の設備を1つ以上所有した。", icon: "🎯", check: (s, ctx) => ctx.allTypesOwned },
+    { id: "a_first_t3", name: "大秘儀への到達", desc: "大秘儀を1つ会得した。", icon: "🌟", check: (s, ctx) => ctx.totalT3Owned >= 1 },
+    { id: "a_first_prestige", name: "生まれ変わり", desc: "初めて転生した。", icon: "💎", check: s => s.prestigeCount >= 1 },
+    { id: "a_5_prestige", name: "円環の探求者", desc: "5回転生した。", icon: "🔄", check: s => s.prestigeCount >= 5 },
+    { id: "a_20_prestige", name: "輪廻の賢者", desc: "20回転生した。", icon: "🌀", check: s => s.prestigeCount >= 20 },
+    { id: "a_10_stones", name: "石の蒐集家", desc: "賢者の石を10個保有した。", icon: "💠", check: s => s.stones >= 10 },
+    { id: "a_100_stones", name: "石の長者", desc: "賢者の石を100個保有した。", icon: "💠", check: s => s.stones >= 100 },
+    { id: "a_first_stoneshop", name: "最初の刻印", desc: "刻印術を1つ習得した。", icon: "🗿", check: (s, ctx) => ctx.totalStoneShopOwned >= 1 },
+    { id: "a_first_invest", name: "初めての投資", desc: "取引所で株を購入した。", icon: "📈", check: (s, ctx) => ctx.totalSharesOwned > 0 },
+    { id: "a_diversify", name: "分散投資", desc: "取引所の全銘柄を保有した。", icon: "🧺", check: (s, ctx) => ctx.allAssetsOwned },
+    { id: "a_offline_return", name: "おかえりなさい", desc: "留守中の進行報酬を受け取った。", icon: "🌙", check: s => s.offlineReturnsCount >= 1 },
+  ];
+
+  const flavorLines = [
+    ["精霊", "小さな精霊が粉をひとつまみ運んできた。"],
+    ["助手", "見習い助手が瓶の蓋を締め直した。"],
+    ["ふいご", "ふいごが静かに火を煽った。"],
+    ["蒸留装置", "蒸留装置から澄んだ雫が落ちた。"],
+    ["ゴーレム", "ゴーレムが薪を積み直した。"],
+    ["星見の塔", "塔の上で星が瞬いた。"],
+    ["図書館", "禁書の頁が独りでにめくれた。"],
+    ["異界の門", "門の向こうで何かが瞬いた。"],
+    ["レヴィアタン", "深海の底で何かが身じろぎした。"],
+    ["鍛冶場", "太陽の炉が一段と眩しく燃えた。"],
+  ];
 
   const STONE_BONUS_PCT = 0.03;   // 石1個ごとに+3%
   const PRESTIGE_DIVISOR = 1e5;   // 石換算の基準値
 
-  const upgrades = [
-    { id: "sprite",      name: "小さな精霊",   icon: "🌱", baseCost: 15,     baseYield: 0.2,  owned: 0 },
-    { id: "apprentice",  name: "見習い助手",   icon: "🧑‍🎓", baseCost: 100,   baseYield: 1,    owned: 0 },
-    { id: "bellows",     name: "自動ふいご",   icon: "🔥", baseCost: 550,   baseYield: 5,    owned: 0 },
-    { id: "still",       name: "蒸留装置",     icon: "⚗️", baseCost: 3000,  baseYield: 24,   owned: 0 },
-    { id: "golem",       name: "石のゴーレム", icon: "🗿", baseCost: 18000, baseYield: 120,  owned: 0 },
-    { id: "observatory", name: "星見の塔",     icon: "🔭", baseCost: 120000, baseYield: 640, owned: 0 },
-  ];
+  /* ================= state (runtime, mutable copies) ================= */
+  const state = {
+    essence: 0,
+    totalEarned: 0,
+    lastTick: Date.now(),
+    stones: 0,
+    prestigeCount: 0,
+    prestigeHistory: [],       // {n, stonesGained, totalAtPrestige}
+    unlockedAchievements: [],
+    reachedMilestones: [],
+    offlineReturnsCount: 0,
+    buyQty: 1,                 // 1 | 10 | 25 | 'max'
+  };
 
-  // tier2: 「秘伝の強化」。unlockAt は工房設備の合計所持数、効果は生産全体への乗算ボーナス(%)
-  const tier2Upgrades = [
-    { id: "t2_recipe",  name: "秘伝の配合書", icon: "📜", unlockAt: 10,  baseCost: 800,     costMult: 3.2, bonusPct: 0.10, owned: 0, max: 5 },
-    { id: "t2_furnace", name: "業火の炉",     icon: "🔺", unlockAt: 25,  baseCost: 6000,    costMult: 3.4, bonusPct: 0.14, owned: 0, max: 5 },
-    { id: "t2_circle",  name: "召喚の魔法陣", icon: "⭕", unlockAt: 50,  baseCost: 40000,   costMult: 3.6, bonusPct: 0.18, owned: 0, max: 5 },
-    { id: "t2_codex",   name: "深淵の古文書", icon: "📖", unlockAt: 90,  baseCost: 300000,  costMult: 3.8, bonusPct: 0.24, owned: 0, max: 5 },
-  ];
+  const upgrades = upgradeDefs.map(d => Object.assign({ owned: 0 }, d));
+  const tier2Upgrades = tier2Defs.map(d => Object.assign({ owned: 0 }, d));
+  const tier3Upgrades = tier3Defs.map(d => Object.assign({ owned: 0 }, d));
+  const stoneShop = stoneShopDefs.map(d => Object.assign({ owned: 0 }, d));
+  const assets = assetDefs.map(d => Object.assign({ shares: 0, priceHistory: [d.price] }, d));
 
-  const milestones = [
-    { at: 50,      label: "50粒 — 最初の一握り" },
-    { at: 500,     label: "500粒 — るつぼが温まってきた" },
-    { at: 5000,    label: "5,000粒 — 見習いを卒業" },
-    { at: 50000,   label: "50,000粒 — 工房長と呼ばれる" },
-    { at: 500000,  label: "500,000粒 — 錬金術師の域" },
-    { at: 5000000, label: "5,000,000粒 — 伝説の工房" },
-  ];
-  const reachedMilestones = new Set();
-
-  const eras = [
-    { at: 0,      label: "見習いの間" },
-    { at: 500,    label: "工房の朝" },
-    { at: 5000,   label: "職人の間" },
-    { at: 50000,  label: "深夜の蒸留室" },
-    { at: 500000, label: "星読みの塔" },
-  ];
-
-  // ===== investment assets =====
-  // 価格は平均回帰モデルのみで駆動(発散しない)。保有株数はプレイヤーの買い付けでのみ増える。
-  const assets = [
-    {
-      id: "low", name: "地脈の欠片", icon: "🪨", risk: "low", riskLabel: "低リスク",
-      price: 10, target: 12, speed: 0.02, vol: 0.010,
-      dividendPerShare: 0.02, shares: 0, priceHistory: [10],
-    },
-    {
-      id: "mid", name: "月光結晶", icon: "🔷", risk: "mid", riskLabel: "中リスク",
-      price: 10, target: 20, speed: 0.012, vol: 0.035,
-      dividendPerShare: 0.07, shares: 0, priceHistory: [10],
-    },
-    {
-      id: "high", name: "混沌の残滓", icon: "🌀", risk: "high", riskLabel: "高リスク",
-      price: 10, target: 45, speed: 0.006, vol: 0.09,
-      dividendPerShare: 0.20, shares: 0, priceHistory: [10],
-    },
-  ];
   let assetRngSeed = Date.now() & 0x7fffffff;
   function assetRand() {
     assetRngSeed = (assetRngSeed * 1103515245 + 12345) & 0x7fffffff;
     return assetRngSeed / 0x7fffffff;
   }
-
-  // ===== achievements =====
-  const achievements = [
-    { id: "a_first_click", name: "はじめの一混ぜ", desc: "初めてるつぼをクリックした。", icon: "👆", check: s => s.totalEarned > 0 },
-    { id: "a_1k", name: "駆け出し", desc: "累計1,000粒を稼いだ。", icon: "🌟", check: s => s.totalEarned >= 1000 },
-    { id: "a_1m", name: "熟練の証", desc: "累計1,000,000粒を稼いだ。", icon: "✨", check: s => s.totalEarned >= 1000000 },
-    { id: "a_1b", name: "伝説の錬金術師", desc: "累計10億粒を稼いだ。", icon: "🏆", check: s => s.totalEarned >= 1e9 },
-    { id: "a_first_upgrade", name: "最初の仲間", desc: "設備を1つ購入した。", icon: "🤝", check: (s, ctx) => ctx.totalUpgradeOwned >= 1 },
-    { id: "a_10_upgrade", name: "小さな工房", desc: "設備を合計10個所有した。", icon: "🏠", check: (s, ctx) => ctx.totalUpgradeOwned >= 10 },
-    { id: "a_all_types", name: "揃い踏み", desc: "全種類の設備を1つ以上所有した。", icon: "🎯", check: (s, ctx) => ctx.allTypesOwned },
-    { id: "a_first_prestige", name: "生まれ変わり", desc: "初めて転生した。", icon: "💎", check: s => s.prestigeCount >= 1 },
-    { id: "a_5_prestige", name: "円環の探求者", desc: "5回転生した。", icon: "🔄", check: s => s.prestigeCount >= 5 },
-    { id: "a_10_stones", name: "石の蒐集家", desc: "賢者の石を10個保有した。", icon: "💠", check: s => s.stones >= 10 },
-    { id: "a_first_invest", name: "初めての投資", desc: "取引所で株を購入した。", icon: "📈", check: (s, ctx) => ctx.totalSharesOwned > 0 },
-    { id: "a_diversify", name: "分散投資", desc: "3種すべての株を保有した。", icon: "🧺", check: (s, ctx) => ctx.allAssetsOwned },
-  ];
-  const unlockedAchievements = new Set();
 
   /* ================= helpers ================= */
   function formatNum(n) {
@@ -954,12 +1183,58 @@
     return Math.floor(n).toLocaleString("ja-JP");
   }
 
-  function costFor(up) {
-    return Math.ceil(up.baseCost * Math.pow(1.15, up.owned));
+  function stoneShopLevel(id) {
+    const s = stoneShop.find(x => x.id === id);
+    return s ? s.owned : 0;
+  }
+
+  function clickBonusMult() {
+    return 1 + stoneShopLevel("ss_click") * stoneShopDefs.find(d => d.id === "ss_click").amount;
+  }
+  function autoBonusMult() {
+    return 1 + stoneShopLevel("ss_auto") * stoneShopDefs.find(d => d.id === "ss_auto").amount;
+  }
+  function offlineCapHours() {
+    return (MAX_OFFLINE_SECONDS / 3600) + stoneShopLevel("ss_offline") * stoneShopDefs.find(d => d.id === "ss_offline").amount;
+  }
+  function dividendBonusMult() {
+    return 1 + stoneShopLevel("ss_divi") * stoneShopDefs.find(d => d.id === "ss_divi").amount;
+  }
+  function startSpritesCount() {
+    return stoneShopLevel("ss_start") * stoneShopDefs.find(d => d.id === "ss_start").amount;
+  }
+
+  function costFor(up, qty) {
+    qty = qty || 1;
+    // sum of geometric series: baseCost * r^owned * (r^qty - 1) / (r - 1)
+    const r = 1.15;
+    const base = up.baseCost * Math.pow(r, up.owned);
+    if (qty === 1) return Math.ceil(base);
+    return Math.ceil(base * (Math.pow(r, qty) - 1) / (r - 1));
+  }
+
+  function maxAffordableQty(up, essence) {
+    // find max n such that costFor(up, n) <= essence
+    const r = 1.15;
+    const base = up.baseCost * Math.pow(r, up.owned);
+    if (base > essence) return 0;
+    // essence >= base * (r^n - 1)/(r-1)  =>  r^n <= essence*(r-1)/base + 1
+    const rhs = (essence * (r - 1)) / base + 1;
+    let n = Math.floor(Math.log(rhs) / Math.log(r));
+    // guard against float error
+    while (n > 0 && costFor(up, n) > essence) n--;
+    while (costFor(up, n + 1) <= essence) n++;
+    return Math.max(0, n);
   }
 
   function tier2CostFor(t2) {
     return Math.ceil(t2.baseCost * Math.pow(t2.costMult, t2.owned));
+  }
+  function tier3CostFor(t3) {
+    return Math.ceil(t3.baseCost * Math.pow(t3.costMult, t3.owned));
+  }
+  function stoneShopCostFor(s) {
+    return Math.ceil(s.baseCost * Math.pow(s.costMult, s.owned));
   }
 
   function stoneMultiplier() {
@@ -972,16 +1247,22 @@
     return mult;
   }
 
+  function tier3Multiplier() {
+    let mult = 1;
+    tier3Upgrades.forEach(t3 => { mult *= (1 + t3.owned * t3.multBonus); });
+    return mult;
+  }
+
   function baseRate() {
     return upgrades.reduce((sum, u) => sum + u.owned * u.baseYield, 0);
   }
 
   function totalRate() {
-    return baseRate() * tier2Multiplier() * stoneMultiplier();
+    return baseRate() * tier2Multiplier() * tier3Multiplier() * stoneMultiplier() * autoBonusMult();
   }
 
   function dividendTotal() {
-    return assets.reduce((sum, a) => sum + a.shares * a.dividendPerShare, 0) * stoneMultiplier();
+    return assets.reduce((sum, a) => sum + a.shares * a.dividendPerShare, 0) * stoneMultiplier() * dividendBonusMult();
   }
 
   function potentialStones() {
@@ -1008,16 +1289,28 @@
     if (btn) switchTab(btn.dataset.tab);
   });
 
+  /* ================= buy quantity toggle ================= */
+  document.getElementById("buy-qty-toggle").addEventListener("click", (e) => {
+    const btn = e.target.closest(".buy-qty-btn");
+    if (!btn) return;
+    document.querySelectorAll(".buy-qty-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const qty = btn.dataset.qty;
+    state.buyQty = qty === "max" ? "max" : parseInt(qty, 10);
+    renderUpgrades();
+  });
+
   /* ================= render: workshop ================= */
   function renderEssence() {
     document.getElementById("essence-count").textContent = formatNum(state.essence);
     document.getElementById("rate-display").textContent = "+" + formatNum(totalRate() + dividendTotal());
-    document.getElementById("mult-row-display").textContent = `転生倍率 ×${stoneMultiplier().toFixed(2)}　秘伝倍率 ×${tier2Multiplier().toFixed(2)}`;
+    document.getElementById("mult-row-display").textContent =
+      `転生倍率 ×${stoneMultiplier().toFixed(2)}　秘伝倍率 ×${tier2Multiplier().toFixed(2)}　大秘儀倍率 ×${tier3Multiplier().toFixed(2)}`;
   }
 
   function renderEra() {
-    let current = eras[0].label;
-    for (const e of eras) if (state.essence >= e.at) current = e.label;
+    let current = eraDefs[0].label;
+    for (const e of eraDefs) if (state.essence >= e.at) current = e.label;
     document.getElementById("era-badge").textContent = current;
   }
 
@@ -1028,9 +1321,11 @@
   function renderMilestones() {
     const list = document.getElementById("milestone-list");
     list.innerHTML = "";
-    milestones.forEach(m => {
-      const reached = state.essence >= m.at || reachedMilestones.has(m.at);
-      if (state.essence >= m.at) reachedMilestones.add(m.at);
+    milestoneDefs.forEach(m => {
+      if (state.essence >= m.at && !state.reachedMilestones.includes(m.at)) {
+        state.reachedMilestones.push(m.at);
+      }
+      const reached = state.reachedMilestones.includes(m.at);
       const row = document.createElement("div");
       row.className = "milestone-row" + (reached ? " reached" : "");
       row.innerHTML = `<span class="milestone-dot"></span><span>${m.label}</span>`;
@@ -1044,11 +1339,16 @@
     let totalOwned = 0;
     upgrades.forEach(up => {
       totalOwned += up.owned;
-      const cost = costFor(up);
+      let qty = state.buyQty;
+      if (qty === "max") {
+        qty = Math.max(1, maxAffordableQty(up, state.essence));
+      }
+      const cost = costFor(up, qty);
       const affordable = state.essence >= cost;
       const btn = document.createElement("button");
       btn.className = "upgrade";
       btn.disabled = !affordable;
+      const qtyLabel = state.buyQty === "max" ? `×${qty}` : (qty > 1 ? `×${qty}` : "");
       btn.innerHTML = `
         <div class="upgrade-icon">${up.icon}</div>
         <div class="upgrade-mid">
@@ -1056,7 +1356,7 @@
           <div class="upgrade-yield">+${formatNum(up.baseYield)} 粒/秒 ずつ</div>
         </div>
         <div class="upgrade-right">
-          <div class="upgrade-cost">${formatNum(cost)}</div>
+          <div class="upgrade-cost">${formatNum(cost)} ${qtyLabel}</div>
           <span class="upgrade-cost-unit">粒</span>
         </div>
       `;
@@ -1104,6 +1404,44 @@
     document.getElementById("tier2-owned").textContent = "保有 " + totalT2Owned;
   }
 
+  function renderTier3() {
+    const list = document.getElementById("tier3-list");
+    list.innerHTML = "";
+    const totalT2Owned = tier2Upgrades.reduce((s, u) => s + u.owned, 0);
+    let totalT3Owned = 0;
+
+    tier3Upgrades.forEach(t3 => {
+      totalT3Owned += t3.owned;
+      if (totalT2Owned < t3.unlockAt) {
+        const lockedRow = document.createElement("div");
+        lockedRow.className = "tier-lock-note";
+        lockedRow.textContent = `🔒 秘伝の強化を合計${t3.unlockAt}個所有すると解放（現在${totalT2Owned}個）`;
+        list.appendChild(lockedRow);
+        return;
+      }
+      const cost = tier3CostFor(t3);
+      const maxed = t3.owned >= t3.max;
+      const affordable = state.essence >= cost && !maxed;
+      const btn = document.createElement("button");
+      btn.className = "upgrade";
+      btn.disabled = !affordable;
+      btn.innerHTML = `
+        <div class="upgrade-icon">${t3.icon}</div>
+        <div class="upgrade-mid">
+          <div class="upgrade-name">${t3.name} ${t3.owned > 0 ? `<span class="upgrade-owned">×${t3.owned}</span>` : ""} ${maxed ? `<span class="upgrade-owned">MAX</span>` : ""}</div>
+          <div class="upgrade-yield">全生産倍率が ×${(1 + t3.multBonus).toFixed(2)} される (最大${t3.max}重ねがけ・乗算)</div>
+        </div>
+        <div class="upgrade-right">
+          <div class="upgrade-cost">${maxed ? "—" : formatNum(cost)}</div>
+          <span class="upgrade-cost-unit">${maxed ? "" : "粒"}</span>
+        </div>
+      `;
+      if (!maxed) btn.addEventListener("click", () => buyTier3(t3));
+      list.appendChild(btn);
+    });
+    document.getElementById("tier3-owned").textContent = "保有 " + totalT3Owned;
+  }
+
   function renderWorkshopAll() {
     renderEssence();
     renderEra();
@@ -1111,15 +1449,18 @@
     renderMilestones();
     renderUpgrades();
     renderTier2();
+    renderTier3();
   }
 
   /* ================= actions: workshop ================= */
   function buyUpgrade(up) {
-    const cost = costFor(up);
-    if (state.essence < cost) return;
+    let qty = state.buyQty;
+    if (qty === "max") qty = Math.max(1, maxAffordableQty(up, state.essence));
+    const cost = costFor(up, qty);
+    if (state.essence < cost || qty < 1) return;
     state.essence -= cost;
-    up.owned += 1;
-    addLog(`${up.name}を迎え入れた（${up.owned}体目）。`, "工房");
+    up.owned += qty;
+    addLog(qty > 1 ? `${up.name}を${qty}体迎え入れた（計${up.owned}体）。` : `${up.name}を迎え入れた（${up.owned}体目）。`, "工房");
     renderWorkshopAll();
     checkAchievements();
   }
@@ -1134,8 +1475,18 @@
     checkAchievements();
   }
 
+  function buyTier3(t3) {
+    const cost = tier3CostFor(t3);
+    if (state.essence < cost || t3.owned >= t3.max) return;
+    state.essence -= cost;
+    t3.owned += 1;
+    addLog(`${t3.name}に手が届いた。工房の理が書き換わる。`, "大秘儀");
+    renderWorkshopAll();
+    checkAchievements();
+  }
+
   function clickCrucible(evt) {
-    const gain = state.perClick * stoneMultiplier();
+    const gain = 1 * stoneMultiplier() * clickBonusMult();
     state.essence += gain;
     state.totalEarned += gain;
     renderWorkshopAll();
@@ -1191,7 +1542,60 @@
         histList.appendChild(row);
       });
     }
+
+    renderStoneShop();
   }
+
+  function renderStoneShop() {
+    const list = document.getElementById("stoneshop-list");
+    list.innerHTML = "";
+    let totalOwned = 0;
+    stoneShop.forEach(s => {
+      totalOwned += s.owned;
+      const cost = stoneShopCostFor(s);
+      const maxed = s.owned >= s.max;
+      const affordable = state.stones >= cost && !maxed;
+      const btn = document.createElement("button");
+      btn.className = "upgrade";
+      btn.disabled = !affordable;
+      btn.innerHTML = `
+        <div class="upgrade-icon">${s.icon}</div>
+        <div class="upgrade-mid">
+          <div class="upgrade-name">${s.name} ${s.owned > 0 ? `<span class="upgrade-owned">×${s.owned}</span>` : ""} ${maxed ? `<span class="upgrade-owned">MAX</span>` : ""}</div>
+          <div class="upgrade-yield">${s.desc}</div>
+        </div>
+        <div class="upgrade-right">
+          <div class="upgrade-cost">${maxed ? "—" : formatInt(cost)}</div>
+          <span class="upgrade-cost-unit">${maxed ? "" : "石"}</span>
+        </div>
+      `;
+      if (!maxed) btn.addEventListener("click", () => buyStoneShop(s));
+      list.appendChild(btn);
+    });
+    document.getElementById("stoneshop-owned").textContent = "保有 " + totalOwned;
+  }
+
+  function buyStoneShop(s) {
+    const cost = stoneShopCostFor(s);
+    if (state.stones < cost || s.owned >= s.max) return;
+    state.stones -= cost;
+    // 石は「刻印の代金」として一部消費される。ただし表示上の生産倍率が下がりすぎないよう、
+    // 消費分は最終的な石ボーナス計算に影響しない別カウンタで管理する。
+    permanentStonesSpent += cost;
+    s.owned += 1;
+    addLog(`${s.name}を刻んだ。この力は転生しても消えない。`, "刻印");
+    renderPrestige();
+    renderWorkshopAll();
+    renderEssence();
+    checkAchievements();
+  }
+
+  // 刻印購入で減った石を生産倍率計算から除外するため、実効石数は「保有石 + 刻印に使った石」とする。
+  let permanentStonesSpent = 0;
+  const _origStoneMultiplier = stoneMultiplier;
+  stoneMultiplier = function () {
+    return 1 + (state.stones + permanentStonesSpent) * STONE_BONUS_PCT;
+  };
 
   function doPrestige() {
     const gain = potentialStones() - state.stones;
@@ -1204,12 +1608,21 @@
     state.essence = 0;
     upgrades.forEach(u => u.owned = 0);
     tier2Upgrades.forEach(t2 => t2.owned = 0);
+    tier3Upgrades.forEach(t3 => t3.owned = 0);
+    // 刻印術「初期化の刻印」があれば、小さな精霊を最初から所持した状態で再開する
+    const startCount = startSpritesCount();
+    if (startCount > 0) {
+      const sprite = upgrades.find(u => u.id === "sprite");
+      if (sprite) sprite.owned = startCount;
+    }
     // 投資の保有株はプレイヤーの資産として転生後も残す(超長期の実感を持たせるため)
+    // 賢者の石・刻印術も永続
 
     addLog(`工房を賢者の石${gain}個に変えて生まれ変わった。`, "転生");
     renderWorkshopAll();
     renderPrestige();
     checkAchievements();
+    persist();
   }
 
   document.getElementById("prestige-btn").addEventListener("click", doPrestige);
@@ -1245,7 +1658,7 @@
       const prev = a.priceHistory.length > 1 ? a.priceHistory[a.priceHistory.length - 2] : a.price;
       const deltaPct = prev > 0 ? ((a.price - prev) / prev) * 100 : 0;
       const holdingValue = a.shares * a.price;
-      const dividendRate = a.shares * a.dividendPerShare * stoneMultiplier();
+      const dividendRate = a.shares * a.dividendPerShare * stoneMultiplier() * dividendBonusMult();
 
       const buyCostOne = a.price;
       const canBuyOne = state.essence >= buyCostOne;
@@ -1317,6 +1730,7 @@
     renderAssets();
     renderUpgrades();
     renderTier2();
+    renderTier3();
     checkAchievements();
   }
 
@@ -1326,16 +1740,18 @@
     const allTypesOwned = upgrades.every(u => u.owned >= 1);
     const totalSharesOwned = assets.reduce((s, a) => s + a.shares, 0);
     const allAssetsOwned = assets.every(a => a.shares >= 1);
-    return { totalUpgradeOwned, allTypesOwned, totalSharesOwned, allAssetsOwned };
+    const totalT3Owned = tier3Upgrades.reduce((s, u) => s + u.owned, 0);
+    const totalStoneShopOwned = stoneShop.reduce((s, u) => s + u.owned, 0);
+    return { totalUpgradeOwned, allTypesOwned, totalSharesOwned, allAssetsOwned, totalT3Owned, totalStoneShopOwned };
   }
 
   function checkAchievements() {
     const ctx = computeAchievementContext();
     let newlyUnlocked = false;
-    achievements.forEach(ach => {
-      if (unlockedAchievements.has(ach.id)) return;
+    achievementDefs.forEach(ach => {
+      if (state.unlockedAchievements.includes(ach.id)) return;
       if (ach.check(state, ctx)) {
-        unlockedAchievements.add(ach.id);
+        state.unlockedAchievements.push(ach.id);
         newlyUnlocked = true;
         addLog(`実績「${ach.name}」を達成した。`, "記録");
       }
@@ -1346,8 +1762,8 @@
   function renderAchievements() {
     const grid = document.getElementById("achv-grid");
     grid.innerHTML = "";
-    achievements.forEach(ach => {
-      const unlocked = unlockedAchievements.has(ach.id);
+    achievementDefs.forEach(ach => {
+      const unlocked = state.unlockedAchievements.includes(ach.id);
       const card = document.createElement("div");
       card.className = "achv-card" + (unlocked ? " unlocked" : "");
       card.innerHTML = `
@@ -1359,7 +1775,7 @@
       `;
       grid.appendChild(card);
     });
-    document.getElementById("achv-count").textContent = `${unlockedAchievements.size} / ${achievements.length}`;
+    document.getElementById("achv-count").textContent = `${state.unlockedAchievements.length} / ${achievementDefs.length}`;
   }
 
   /* ================= passive tick ================= */
@@ -1376,7 +1792,6 @@
       state.totalEarned += gain;
     }
 
-    // asset price movement (independent of dt granularity; tick每回一步)
     assets.forEach(a => tickAssetPrice(a));
 
     renderWorkshopAll();
@@ -1384,15 +1799,6 @@
     renderAssets();
   }
 
-  /* passive log flavor */
-  const flavorLines = [
-    ["精霊", "小さな精霊が粉をひとつまみ運んできた。"],
-    ["助手", "見習い助手が瓶の蓋を締め直した。"],
-    ["ふいご", "ふいごが静かに火を煽った。"],
-    ["蒸留装置", "蒸留装置から澄んだ雫が落ちた。"],
-    ["ゴーレム", "ゴーレムが薪を積み直した。"],
-    ["星見の塔", "塔の上で星が瞬いた。"],
-  ];
   function maybeFlavorLog() {
     if (totalRate() <= 0) return;
     if (Math.random() < 0.18) {
@@ -1418,16 +1824,118 @@
     }, 200);
   }
 
-  /* ================= offline progress ================= */
-  const OFFLINE_STORAGE_KEY = "alchemist_crucible_last_seen_v1";
-  const MAX_OFFLINE_SECONDS = 8 * 3600; // オフライン進行の上限: 8時間ぶん
+  /* ================= save / load ================= */
+  function buildSavePayload() {
+    return {
+      v: SAVE_VERSION,
+      savedAt: Date.now(),
+      state: {
+        essence: state.essence,
+        totalEarned: state.totalEarned,
+        stones: state.stones,
+        prestigeCount: state.prestigeCount,
+        prestigeHistory: state.prestigeHistory,
+        unlockedAchievements: state.unlockedAchievements,
+        reachedMilestones: state.reachedMilestones,
+        offlineReturnsCount: state.offlineReturnsCount,
+        permanentStonesSpent: permanentStonesSpent,
+      },
+      upgrades: upgrades.map(u => ({ id: u.id, owned: u.owned })),
+      tier2: tier2Upgrades.map(u => ({ id: u.id, owned: u.owned })),
+      tier3: tier3Upgrades.map(u => ({ id: u.id, owned: u.owned })),
+      stoneShop: stoneShop.map(u => ({ id: u.id, owned: u.owned })),
+      assets: assets.map(a => ({ id: a.id, shares: a.shares, price: a.price, priceHistory: a.priceHistory })),
+    };
+  }
+
+  function applyLoadedPayload(payload) {
+    if (!payload || !payload.state) return false;
+    const s = payload.state;
+    state.essence = typeof s.essence === "number" ? s.essence : 0;
+    state.totalEarned = typeof s.totalEarned === "number" ? s.totalEarned : 0;
+    state.stones = typeof s.stones === "number" ? s.stones : 0;
+    state.prestigeCount = typeof s.prestigeCount === "number" ? s.prestigeCount : 0;
+    state.prestigeHistory = Array.isArray(s.prestigeHistory) ? s.prestigeHistory : [];
+    state.unlockedAchievements = Array.isArray(s.unlockedAchievements) ? s.unlockedAchievements : [];
+    state.reachedMilestones = Array.isArray(s.reachedMilestones) ? s.reachedMilestones : [];
+    state.offlineReturnsCount = typeof s.offlineReturnsCount === "number" ? s.offlineReturnsCount : 0;
+    permanentStonesSpent = typeof s.permanentStonesSpent === "number" ? s.permanentStonesSpent : 0;
+
+    if (Array.isArray(payload.upgrades)) {
+      payload.upgrades.forEach(saved => {
+        const target = upgrades.find(u => u.id === saved.id);
+        if (target) target.owned = saved.owned || 0;
+      });
+    }
+    if (Array.isArray(payload.tier2)) {
+      payload.tier2.forEach(saved => {
+        const target = tier2Upgrades.find(u => u.id === saved.id);
+        if (target) target.owned = saved.owned || 0;
+      });
+    }
+    if (Array.isArray(payload.tier3)) {
+      payload.tier3.forEach(saved => {
+        const target = tier3Upgrades.find(u => u.id === saved.id);
+        if (target) target.owned = saved.owned || 0;
+      });
+    }
+    if (Array.isArray(payload.stoneShop)) {
+      payload.stoneShop.forEach(saved => {
+        const target = stoneShop.find(u => u.id === saved.id);
+        if (target) target.owned = saved.owned || 0;
+      });
+    }
+    if (Array.isArray(payload.assets)) {
+      payload.assets.forEach(saved => {
+        const target = assets.find(a => a.id === saved.id);
+        if (target) {
+          target.shares = saved.shares || 0;
+          if (typeof saved.price === "number") target.price = saved.price;
+          if (Array.isArray(saved.priceHistory) && saved.priceHistory.length > 0) target.priceHistory = saved.priceHistory;
+        }
+      });
+    }
+    return true;
+  }
+
+  function persist() {
+    try {
+      const payload = buildSavePayload();
+      localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
+      flashSaveBadge();
+      const status = document.getElementById("autosave-status");
+      if (status) status.textContent = "10秒ごとに自動保存中。最終保存: " + new Date().toLocaleTimeString("ja-JP");
+      return payload;
+    } catch (e) {
+      const status = document.getElementById("autosave-status");
+      if (status) status.textContent = "自動保存に失敗した（ブラウザの保存領域が使えない可能性がある）。";
+      return null;
+    }
+  }
+
+  function flashSaveBadge() {
+    const badge = document.getElementById("save-badge");
+    badge.textContent = "💾 保存済み";
+    badge.classList.add("flash");
+    setTimeout(() => badge.classList.remove("flash"), 900);
+  }
+
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
 
   function computeOfflineGain(seconds) {
     const rate = totalRate() + dividendTotal();
     return rate * seconds;
   }
 
-  function showOfflineModal(gain, seconds) {
+  function showOfflineModal(gain, seconds, wasCapped) {
     if (gain <= 0) return;
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -1436,52 +1944,125 @@
     else timeLabel = `${mins}分`;
     document.getElementById("offline-sub").textContent = `${timeLabel}のあいだ、工房は静かに動き続けていた。`;
     document.getElementById("offline-gain").textContent = "+" + formatNum(gain) + " 粒";
+    document.getElementById("offline-cap-note").textContent = wasCapped
+      ? `留守中の進行は上限（${offlineCapHours().toFixed(0)}時間ぶん）で頭打ちになっている。刻印術「眠りの刻印」で上限をのばせる。`
+      : "";
     document.getElementById("offline-modal").classList.add("show");
+    state.offlineReturnsCount += 1;
   }
 
   document.getElementById("offline-close-btn").addEventListener("click", () => {
     document.getElementById("offline-modal").classList.remove("show");
+    checkAchievements();
+    persist();
   });
 
-  function checkOfflineProgress() {
-    try {
-      const lastSeen = localStorage.getItem(OFFLINE_STORAGE_KEY);
-      if (lastSeen) {
-        const elapsedSec = Math.min(MAX_OFFLINE_SECONDS, Math.max(0, (Date.now() - parseInt(lastSeen, 10)) / 1000));
-        if (elapsedSec > 30) { // 30秒未満は誤差として無視
-          const gain = computeOfflineGain(elapsedSec);
-          if (gain > 0) {
-            state.essence += gain;
-            state.totalEarned += gain;
-            showOfflineModal(gain, elapsedSec);
-          }
-        }
+  function checkOfflineProgress(savedPayload) {
+    if (!savedPayload || !savedPayload.savedAt) return;
+    const capSeconds = offlineCapHours() * 3600;
+    const rawElapsedSec = Math.max(0, (Date.now() - savedPayload.savedAt) / 1000);
+    const wasCapped = rawElapsedSec > capSeconds;
+    const elapsedSec = Math.min(capSeconds, rawElapsedSec);
+    if (elapsedSec > 20) { // 20秒未満は誤差として無視
+      const gain = computeOfflineGain(elapsedSec);
+      if (gain > 0) {
+        state.essence += gain;
+        state.totalEarned += gain;
+        showOfflineModal(gain, elapsedSec, wasCapped);
       }
-    } catch (e) {
-      // localStorage未使用環境では単に何もしない
     }
   }
 
-  function saveLastSeen() {
+  /* ================= settings tab actions ================= */
+  document.getElementById("manual-save-btn").addEventListener("click", () => {
+    persist();
+    addLog("手動で工房日誌を書き留めた。", "記録");
+  });
+
+  document.getElementById("save-badge").addEventListener("click", () => {
+    persist();
+  });
+
+  document.getElementById("export-btn").addEventListener("click", () => {
+    const payload = buildSavePayload();
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    const area = document.getElementById("export-area");
+    area.value = encoded;
+    document.getElementById("export-wrap").classList.add("show");
+    area.select();
+  });
+
+  document.getElementById("import-btn").addEventListener("click", () => {
+    document.getElementById("import-wrap").classList.toggle("show");
+  });
+  document.getElementById("import-cancel-btn").addEventListener("click", () => {
+    document.getElementById("import-wrap").classList.remove("show");
+    document.getElementById("import-area").value = "";
+  });
+  document.getElementById("import-confirm-btn").addEventListener("click", () => {
+    const raw = document.getElementById("import-area").value.trim();
+    if (!raw) return;
     try {
-      localStorage.setItem(OFFLINE_STORAGE_KEY, Date.now().toString());
-    } catch (e) { /* no-op */ }
-  }
-  window.addEventListener("beforeunload", saveLastSeen);
-  setInterval(saveLastSeen, 5000); // 定期保存(タブが閉じられずクラッシュしても直近値が残る)
+      const decoded = decodeURIComponent(escape(atob(raw)));
+      const payload = JSON.parse(decoded);
+      if (applyLoadedPayload(payload)) {
+        renderWorkshopAll();
+        renderPrestige();
+        renderAssets();
+        renderAchievements();
+        persist();
+        document.getElementById("import-wrap").classList.remove("show");
+        document.getElementById("import-area").value = "";
+        addLog("外部のセーブデータを読み込んだ。", "記録");
+      } else {
+        alert("読み込みに失敗した。データの形式が正しくない可能性がある。");
+      }
+    } catch (e) {
+      alert("読み込みに失敗した。貼り付けた内容を確認してほしい。");
+    }
+  });
+
+  document.getElementById("reset-btn").addEventListener("click", () => {
+    const first = confirm("本当にすべてのデータを削除するか？賢者の石・刻印術・株の保有もすべて消える。この操作は取り消せない。");
+    if (!first) return;
+    const second = confirm("最終確認：本当によいか？もう一度「OK」を押すと工房は完全に最初からやり直しになる。");
+    if (!second) return;
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    location.reload();
+  });
 
   /* ================= init ================= */
   document.getElementById("crucible-btn").addEventListener("click", clickCrucible);
+
+  const savedPayload = loadFromStorage();
+  if (savedPayload) {
+    applyLoadedPayload(savedPayload);
+  }
 
   renderWorkshopAll();
   renderPrestige();
   renderAssets();
   renderAchievements();
   animateBubbles();
-  checkOfflineProgress();
 
-  setInterval(tick, 1000); // 価格変動・配当・生産をすべて1秒刻みで統一
+  if (savedPayload) {
+    checkOfflineProgress(savedPayload);
+  }
+
+  const capDesc = document.getElementById("offline-cap-desc");
+  if (capDesc) capDesc.textContent = `現在の上限: ${offlineCapHours().toFixed(0)}時間ぶん。放置報酬はこの時間で頭打ちになる。刻印術「眠りの刻印」で延長できる。`;
+
+  renderWorkshopAll();
+  checkAchievements();
+  persist();
+
+  setInterval(tick, 1000);          // 価格変動・配当・生産をすべて1秒刻みで統一
   setInterval(maybeFlavorLog, 3000);
+  setInterval(persist, 10000);      // 10秒ごとに自動保存
+  window.addEventListener("beforeunload", persist);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") persist();
+  });
 
 })();
 </script>
