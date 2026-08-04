@@ -316,6 +316,178 @@
     100% { opacity: 0; transform: translate(-50%, -70px) scale(1.04); }
   }
 
+
+  .lane-panel { margin-top: 20px; }
+  .lane-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .lane-summon-btn {
+    background: linear-gradient(180deg, #6b5a8c, #4f4468);
+    border: 1px solid #8d7bb0;
+    color: #f4f0fb;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 10px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.08s ease;
+  }
+  .lane-summon-btn:hover { filter: brightness(1.08); }
+  .lane-summon-btn:active { transform: translateY(1px); }
+  .lane-summon-btn:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+  .lane-cost {
+    font-size: 12px;
+    color: var(--violet-bright);
+    font-variant-numeric: tabular-nums;
+  }
+  .lane-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .lane-row {
+    position: relative;
+    height: 60px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    background:
+      linear-gradient(90deg, rgba(217,164,65,0.05), transparent 35%),
+      linear-gradient(180deg, rgba(43,33,25,0.95), rgba(33,26,20,0.98));
+  }
+  .lane-row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(90deg, rgba(89,69,47,0.18) 1px, transparent 1px);
+    background-size: 26px 100%;
+    opacity: 0.28;
+    pointer-events: none;
+  }
+  .lane-row-label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    z-index: 2;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .lane-track {
+    position: absolute;
+    inset: 0 10px 0 92px;
+  }
+  .lane-monster {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 10px;
+    border: 1px solid var(--line-bright);
+    border-radius: 999px;
+    background: rgba(17, 13, 10, 0.86);
+    box-shadow: 0 0 16px rgba(0,0,0,0.22);
+    white-space: nowrap;
+    font-size: 12px;
+    color: var(--parchment);
+    pointer-events: none;
+  }
+  .lane-monster .icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+  .lane-monster .name {
+    max-width: 132px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lane-monster .bonus {
+    font-size: 10px;
+    color: var(--amber-bright);
+    font-variant-numeric: tabular-nums;
+  }
+  .lane-monster.r0 { border-color: #50674a; }
+  .lane-monster.r1 { border-color: #4d6f81; }
+  .lane-monster.r2 { border-color: #6a5a86; }
+  .lane-monster.r3 { border-color: #8d6a42; }
+  .lane-monster.r4 { border-color: #a24f4f; box-shadow: 0 0 18px rgba(178,92,74,0.18); }
+  .lane-monster.r5 { border-color: #c1622f; box-shadow: 0 0 22px rgba(193,98,47,0.20); }
+  .lane-monster.r6 { border-color: #d9a441; box-shadow: 0 0 24px rgba(217,164,65,0.24); }
+  .lane-monster.r7 { border-color: #f0c46a; box-shadow: 0 0 28px rgba(240,196,106,0.28); }
+  .lane-monster.r8 { border-color: #b7a4dd; box-shadow: 0 0 30px rgba(183,164,221,0.28); }
+  .lane-monster.r9 { border-color: #ffffff; box-shadow: 0 0 36px rgba(255,255,255,0.22); }
+  .lane-alert {
+    min-height: 18px;
+    margin-top: 10px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--danger);
+    line-height: 1.5;
+  }
+  .lane-alert.ok { color: var(--amber-dim); }
+  .lane-alert.warn { color: var(--danger); font-weight: 700; }
+  .lane-shop {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .lane-card {
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .lane-card.rare {
+    border-color: var(--line-bright);
+    box-shadow: inset 0 0 0 1px rgba(217,164,65,0.06);
+  }
+  .lane-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .lane-card-chance {
+    font-size: 11px;
+    color: var(--amber-bright);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .lane-card-power {
+    font-size: 12px;
+    color: var(--parchment-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .lane-card-desc {
+    font-size: 11px;
+    color: var(--ink-faint);
+    line-height: 1.55;
+  }
+  .lane-card-note {
+    font-size: 10px;
+    color: var(--amber-dim);
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
   .spark-pop {
     position: absolute;
     width: 6px;
@@ -797,6 +969,7 @@
           </div>
           <div class="rate-row">自動生成 <strong id="rate-display">+0</strong> 粒/秒</div>
           <div class="mult-row" id="mult-row-display">転生倍率 ×1.00</div>
+          <div class="mult-row" id="lane-mult-row-display">レーン倍率 ×1.00</div>
 
           <div class="crucible-wrap">
             <button id="crucible-btn" aria-label="るつぼを叩いて精霊粉を生成する">
@@ -881,6 +1054,21 @@
           </div>
           <div class="panel-desc">工房が長く続くほど、さらに奥にある大秘儀が姿を現す。効果は乗算で積み重なり、超長期の周回を支える。</div>
           <div class="upgrade-list" id="tier3-list"></div>
+        </div>
+
+        <div class="panel lane-panel" style="margin-top:20px;">
+          <div class="panel-header">
+            <h2>レーン</h2>
+            <span class="count" id="lane-owned">保有 0</span>
+          </div>
+          <div class="panel-desc">精霊粉でモンスターを召喚し、3本のレーンを横切らせる。レアほど生産倍率が大きく跳ね上がる。</div>
+          <div class="lane-topbar">
+            <button class="lane-summon-btn" id="lane-summon-btn">1体召喚</button>
+            <div class="lane-cost" id="lane-summon-cost">必要 0 粒</div>
+          </div>
+          <div class="lane-stage" id="lane-stage"></div>
+          <div class="lane-alert ok" id="lane-alert">通常モンスターは静かに流れる。高レア出現時は警告が出る。</div>
+          <div class="lane-shop" id="lane-shop"></div>
         </div>
       </div>
     </div>
@@ -1045,7 +1233,7 @@
   "use strict";
 
   const SAVE_KEY = "alchemist_crucible_save_v2";
-  const SAVE_VERSION = 2;
+  const SAVE_VERSION = 3;
   const MAX_OFFLINE_SECONDS = 8 * 3600; // オフライン進行の上限: 8時間ぶん
 
   /* ================= definitions ================= */
@@ -1125,6 +1313,19 @@
       price: 10, target: 90,  speed: 0.003, vol: 0.16,  dividendPerShare: 0.55 },
   ];
 
+  const laneMonsterDefs = [
+    { id: "lm_01", name: "草芽スライム", icon: "🌱", chance: 80.0,   bonusPct: 0.25,   summonCost: 30,  line: "静かな増産。" },
+    { id: "lm_02", name: "鋼牙ウルフ",   icon: "🐺", chance: 16.0,   bonusPct: 1.0,    summonCost: 70,  line: "噛みつくように生産が伸びる。" },
+    { id: "lm_03", name: "焔角ラプトル", icon: "🦖", chance: 3.2,    bonusPct: 4.0,    summonCost: 160, line: "火力が一気に跳ねる。" },
+    { id: "lm_04", name: "月鎧ゴーレム", icon: "🗿", chance: 0.64,   bonusPct: 12.0,   summonCost: 360, line: "重いが頼れる。" },
+    { id: "lm_05", name: "雷翼ハーピー", icon: "🪽", chance: 0.128,  bonusPct: 35.0,   summonCost: 900, line: "雷のように回転する増産。" },
+    { id: "lm_06", name: "深淵クラゲ",   icon: "🪼", chance: 0.0256, bonusPct: 120.0,  summonCost: 2200, line: "視界が変わるレベルの強化。" },
+    { id: "lm_07", name: "星喰いリヴァ", icon: "🐉", chance: 0.00512, bonusPct: 400.0, summonCost: 6000, line: "警報級の異常個体。" },
+    { id: "lm_08", name: "王冠フェニ",   icon: "🦅", chance: 0.001024, bonusPct: 1200.0, summonCost: 18000, line: "出た瞬間に空気が変わる。" },
+    { id: "lm_09", name: "虚空の聖獣",   icon: "🐲", chance: 0.000205, bonusPct: 3600.0, summonCost: 50000, line: "生産の桁が壊れる。" },
+    { id: "lm_10", name: "神域アーク",   icon: "👑", chance: 0.000041, bonusPct: 15000.0, summonCost: 120000, line: "工房に警報を鳴らせ。"},
+  ];
+
   const achievementDefs = [
     { id: "a_first_click", name: "はじめの一混ぜ", desc: "初めてるつぼをクリックした。", icon: "👆", check: s => s.totalEarned > 0 },
     { id: "a_1k", name: "駆け出し", desc: "累計1,000粒を稼いだ。", icon: "🌟", check: s => s.totalEarned >= 1000 },
@@ -1183,6 +1384,10 @@
   const stoneShop = stoneShopDefs.map(d => Object.assign({ owned: 0 }, d));
   const assets = assetDefs.map(d => Object.assign({ shares: 0, priceHistory: [d.price] }, d));
 
+  const laneUnits = [];
+  let laneUnitSeq = 1;
+  let laneAlertTimer = null;
+
   let assetRngSeed = Date.now() & 0x7fffffff;
   function assetRand() {
     assetRngSeed = (assetRngSeed * 1103515245 + 12345) & 0x7fffffff;
@@ -1234,6 +1439,41 @@
   }
   function startSpritesCount() {
     return stoneShopLevel("ss_start") * stoneShopDefs.find(d => d.id === "ss_start").amount;
+  }
+
+  function laneMonsterById(id) {
+    return laneMonsterDefs.find(d => d.id === id) || laneMonsterDefs[0];
+  }
+
+  function laneBonusMult() {
+    return 1 + laneUnits.reduce((sum, unit) => sum + laneMonsterById(unit.defId).bonusPct / 100, 0);
+  }
+
+  function laneSummonCost() {
+    const base = 30;
+    return Math.ceil(base * Math.pow(1.12, laneUnits.length));
+  }
+
+  function formatPercent(n, digits = 2) {
+    return `${n.toFixed(digits)}%`;
+  }
+
+  function chooseLaneType() {
+    const roll = Math.random() * laneMonsterDefs.reduce((s, d) => s + d.chance, 0);
+    let acc = 0;
+    for (const def of laneMonsterDefs) {
+      acc += def.chance;
+      if (roll <= acc) return def;
+    }
+    return laneMonsterDefs[laneMonsterDefs.length - 1];
+  }
+
+  function randomLaneIndex() {
+    const counts = [0, 0, 0];
+    laneUnits.forEach(u => { counts[u.lane] += 1; });
+    const min = Math.min(...counts);
+    const candidates = counts.map((c, i) => c === min ? i : -1).filter(i => i >= 0);
+    return candidates[Math.floor(Math.random() * candidates.length)] ?? 0;
   }
 
   function costFor(up, qty) {
@@ -1290,11 +1530,11 @@
   }
 
   function totalRate() {
-    return baseRate() * tier2Multiplier() * tier3Multiplier() * stoneMultiplier() * autoBonusMult();
+    return baseRate() * tier2Multiplier() * tier3Multiplier() * stoneMultiplier() * autoBonusMult() * laneBonusMult();
   }
 
   function dividendTotal() {
-    return assets.reduce((sum, a) => sum + a.shares * a.dividendPerShare, 0) * stoneMultiplier() * dividendBonusMult();
+    return assets.reduce((sum, a) => sum + a.shares * a.dividendPerShare, 0) * stoneMultiplier() * dividendBonusMult() * laneBonusMult();
   }
 
   function potentialStones() {
@@ -1338,6 +1578,8 @@
     document.getElementById("rate-display").textContent = "+" + formatNum(totalRate() + dividendTotal());
     document.getElementById("mult-row-display").textContent =
       `転生倍率 ×${stoneMultiplier().toFixed(2)}　秘伝倍率 ×${tier2Multiplier().toFixed(2)}　大秘儀倍率 ×${tier3Multiplier().toFixed(2)}`;
+    const laneLine = document.getElementById("lane-mult-row-display");
+    if (laneLine) laneLine.textContent = `レーン倍率 ×${laneBonusMult().toFixed(2)}`;
   }
 
   function renderEra() {
@@ -1474,6 +1716,112 @@
     document.getElementById("tier3-owned").textContent = "保有 " + totalT3Owned;
   }
 
+  function showLaneAlert(message, kind = "ok") {
+    const el = document.getElementById("lane-alert");
+    if (!el) return;
+    el.textContent = message;
+    el.classList.remove("ok", "warn");
+    el.classList.add(kind);
+    if (laneAlertTimer) clearTimeout(laneAlertTimer);
+    laneAlertTimer = setTimeout(() => {
+      el.textContent = "通常モンスターは静かに流れる。高レア出現時は警告が出る。";
+      el.classList.remove("warn");
+      el.classList.add("ok");
+    }, 3600);
+  }
+
+  function renderLanes() {
+    const stage = document.getElementById("lane-stage");
+    const shop = document.getElementById("lane-shop");
+    if (!stage || !shop) return;
+
+    const now = Date.now();
+    stage.innerHTML = "";
+    for (let lane = 0; lane < 3; lane++) {
+      const row = document.createElement("div");
+      row.className = "lane-row";
+      const track = document.createElement("div");
+      track.className = "lane-track";
+
+      laneUnits.filter(u => u.lane === lane).forEach(unit => {
+        const def = laneMonsterById(unit.defId);
+        const duration = unit.duration;
+        const progress = ((now - unit.bornAt + unit.phase) % duration) / duration;
+        const x = -8 + progress * 116;
+
+        const mon = document.createElement("div");
+        mon.className = `lane-monster r${unit.rank}`;
+        mon.style.left = `${x}%`;
+        mon.innerHTML = `<span class="icon">${def.icon}</span><span class="name">${def.name}</span><span class="bonus">+${formatPercent(def.bonusPct, def.bonusPct < 1 ? 3 : 1)}</span>`;
+        track.appendChild(mon);
+      });
+
+      const label = document.createElement("div");
+      label.className = "lane-row-label";
+      label.textContent = `LANE ${lane + 1}`;
+      row.appendChild(label);
+      row.appendChild(track);
+      stage.appendChild(row);
+    }
+
+    document.getElementById("lane-owned").textContent = "保有 " + laneUnits.length;
+    const cost = laneSummonCost();
+    const costEl = document.getElementById("lane-summon-cost");
+    if (costEl) costEl.textContent = `必要 ${formatNum(cost)} 粒`;
+
+    const btn = document.getElementById("lane-summon-btn");
+    if (btn) btn.disabled = state.essence < cost;
+
+    shop.innerHTML = "";
+    laneMonsterDefs.forEach((def, idx) => {
+      const card = document.createElement("div");
+      card.className = "lane-card" + (idx >= 4 ? " rare" : "");
+      card.innerHTML = `
+        <div class="lane-card-head">
+          <span>${def.icon} ${def.name}</span>
+          <span class="lane-card-chance">${def.chance}%</span>
+        </div>
+        <div class="lane-card-power">生産 +${formatPercent(def.bonusPct, def.bonusPct < 1 ? 3 : 1)}</div>
+        <div class="lane-card-desc">${def.line}</div>
+        <div class="lane-card-note">${idx >= 4 ? "レア個体は出現時に警告表示。" : "流れているあいだも生産に加算される。"}</div>
+      `;
+      shop.appendChild(card);
+    });
+  }
+
+  function summonLaneMonster() {
+    const cost = laneSummonCost();
+    if (state.essence < cost) return;
+    state.essence -= cost;
+    state.totalEarned += 0; // 明示のみ
+    const def = chooseLaneType();
+    const lane = randomLaneIndex();
+    const duration = Math.max(3500, 12000 - Math.min(7500, def.bonusPct * 22));
+    laneUnits.push({
+      id: laneUnitSeq++,
+      defId: def.id,
+      lane,
+      bornAt: Date.now(),
+      phase: Math.random() * duration,
+      duration,
+      rank: laneMonsterDefs.indexOf(def),
+    });
+
+    const rare = def.chance <= 0.64;
+    if (rare) {
+      showLaneAlert(`⚠ 警報: ${def.name} を召喚。${def.line} まわりの生産が大きく跳ね上がっている。`, "warn");
+      addLog(`【警報】${def.name}が出現した。${def.line}`, "レーン");
+    } else {
+      showLaneAlert(`${def.name} を召喚した。レーンを流れながら生産を底上げしている。`, "ok");
+      addLog(`${def.name}を召喚した。`, "レーン");
+    }
+
+    renderEssence();
+    renderLanes();
+    checkAchievements();
+    persist();
+  }
+
   function renderWorkshopAll() {
     renderEssence();
     renderEra();
@@ -1482,6 +1830,7 @@
     renderUpgrades();
     renderTier2();
     renderTier3();
+    renderLanes();
   }
 
   /* ================= actions: workshop ================= */
@@ -1860,6 +2209,7 @@
     renderWorkshopAll();
     renderPrestige();
     renderAssets();
+    renderLanes();
   }
 
   function maybeFlavorLog() {
@@ -1902,6 +2252,7 @@
         reachedMilestones: state.reachedMilestones,
         offlineReturnsCount: state.offlineReturnsCount,
         permanentStonesSpent: permanentStonesSpent,
+        laneUnits: laneUnits,
       },
       upgrades: upgrades.map(u => ({ id: u.id, owned: u.owned })),
       tier2: tier2Upgrades.map(u => ({ id: u.id, owned: u.owned })),
@@ -1923,6 +2274,23 @@
     state.reachedMilestones = Array.isArray(s.reachedMilestones) ? s.reachedMilestones : [];
     state.offlineReturnsCount = typeof s.offlineReturnsCount === "number" ? s.offlineReturnsCount : 0;
     permanentStonesSpent = typeof s.permanentStonesSpent === "number" ? s.permanentStonesSpent : 0;
+    laneUnits.length = 0;
+    if (Array.isArray(s.laneUnits)) {
+      s.laneUnits.forEach(saved => {
+        if (!saved || !saved.defId) return;
+        const def = laneMonsterById(saved.defId);
+        laneUnits.push({
+          id: typeof saved.id === "number" ? saved.id : laneUnitSeq++,
+          defId: def.id,
+          lane: [0,1,2].includes(saved.lane) ? saved.lane : randomLaneIndex(),
+          bornAt: typeof saved.bornAt === "number" ? saved.bornAt : Date.now(),
+          phase: typeof saved.phase === "number" ? saved.phase : Math.random() * 1000,
+          duration: typeof saved.duration === "number" ? saved.duration : Math.max(3500, 12000 - Math.min(7500, def.bonusPct * 22)),
+          rank: typeof saved.rank === "number" ? saved.rank : laneMonsterDefs.indexOf(def),
+        });
+        laneUnitSeq = Math.max(laneUnitSeq, (typeof saved.id === "number" ? saved.id : 0) + 1);
+      });
+    }
 
     if (Array.isArray(payload.upgrades)) {
       payload.upgrades.forEach(saved => {
@@ -2096,6 +2464,7 @@
 
   /* ================= init ================= */
   document.getElementById("crucible-btn").addEventListener("click", clickCrucible);
+  document.getElementById("lane-summon-btn").addEventListener("click", summonLaneMonster);
 
   const savedPayload = loadFromStorage();
   if (savedPayload) {
@@ -2105,6 +2474,7 @@
   renderWorkshopAll();
   renderPrestige();
   renderAssets();
+  renderLanes();
   renderAchievements();
   animateBubbles();
 
