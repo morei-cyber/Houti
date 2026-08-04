@@ -274,8 +274,20 @@
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.08s ease;
   }
-  #crucible-btn svg { width: 100%; height: 100%; display: block; }
+  #crucible-btn svg { width: 100%; height: 100%; display: block; transition: transform 0.12s ease, filter 0.12s ease; }
   #crucible-btn:active { transform: scale(0.97); }
+  #crucible-btn.hit {
+    animation: crucible-hit 240ms ease-out;
+  }
+  #crucible-btn.hit svg {
+    filter: drop-shadow(0 0 10px rgba(240, 196, 106, 0.35));
+    transform: scale(1.025);
+  }
+  @keyframes crucible-hit {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
 
   .crucible-hint {
     text-align: center;
@@ -292,13 +304,33 @@
     font-size: 18px;
     color: var(--amber-bright);
     pointer-events: none;
-    animation: float-up 0.9s ease-out forwards;
+    text-shadow: 0 0 10px rgba(240, 196, 106, 0.22);
+    letter-spacing: 0.02em;
+    animation: float-up 1s ease-out forwards;
     z-index: 5;
   }
   @keyframes float-up {
-    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
-    15%  { opacity: 1; transform: translate(-50%, -8px) scale(1); }
-    100% { opacity: 0; transform: translate(-50%, -64px) scale(1); }
+    0%   { opacity: 0; transform: translate(-50%, 6px) scale(0.72); }
+    12%  { opacity: 1; transform: translate(-50%, -2px) scale(1.02); }
+    45%  { opacity: 1; transform: translate(-50%, -24px) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -70px) scale(1.04); }
+  }
+
+  .spark-pop {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber-bright);
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(240, 196, 106, 0.55);
+    animation: spark-burst 420ms ease-out forwards;
+    z-index: 4;
+  }
+  @keyframes spark-burst {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+    15%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.15); }
   }
 
   /* ===== log ===== */
@@ -946,7 +978,7 @@
       <div class="settings-row">
         <div>
           <div class="settings-row-label">自動保存</div>
-          <div class="settings-row-desc" id="autosave-status">10秒ごとに自動保存中。最終保存: —</div>
+          <div class="settings-row-desc" id="autosave-status">60秒ごとに自動保存中。最終保存: —</div>
         </div>
         <button class="settings-btn" id="manual-save-btn">今すぐ保存</button>
       </div>
@@ -1492,6 +1524,8 @@
     renderWorkshopAll();
     spawnPop(evt, gain);
     pulseCrucible();
+    triggerCrucibleHit();
+    spawnSparkles(evt);
     checkAchievements();
   }
 
@@ -1507,7 +1541,36 @@
     pop.style.top = y + "px";
     btn.style.position = "relative";
     btn.appendChild(pop);
-    setTimeout(() => pop.remove(), 900);
+    setTimeout(() => pop.remove(), 1000);
+  }
+
+  function spawnSparkles(evt) {
+    const btn = document.getElementById("crucible-btn");
+    const rect = btn.getBoundingClientRect();
+    const x = (evt.clientX ?? rect.left + rect.width / 2) - rect.left;
+    const y = (evt.clientY ?? rect.top + rect.height / 2) - rect.top;
+    const offsets = [
+      [-22, -6], [18, -10], [-8, 20], [26, 14]
+    ];
+    offsets.forEach(([dx, dy], i) => {
+      const spark = document.createElement("div");
+      spark.className = "spark-pop";
+      spark.style.left = x + "px";
+      spark.style.top = y + "px";
+      spark.style.setProperty("--dx", dx + "px");
+      spark.style.setProperty("--dy", dy + "px");
+      spark.style.animationDelay = (i * 35) + "ms";
+      btn.appendChild(spark);
+      setTimeout(() => spark.remove(), 500);
+    });
+  }
+
+  function triggerCrucibleHit() {
+    const btn = document.getElementById("crucible-btn");
+    btn.classList.remove("hit");
+    void btn.offsetWidth;
+    btn.classList.add("hit");
+    setTimeout(() => btn.classList.remove("hit"), 260);
   }
 
   function pulseCrucible() {
@@ -1904,7 +1967,7 @@
       localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
       flashSaveBadge();
       const status = document.getElementById("autosave-status");
-      if (status) status.textContent = "10秒ごとに自動保存中。最終保存: " + new Date().toLocaleTimeString("ja-JP");
+      if (status) status.textContent = "60秒ごとに自動保存中。最終保存: " + new Date().toLocaleTimeString("ja-JP");
       return payload;
     } catch (e) {
       const status = document.getElementById("autosave-status");
@@ -2058,7 +2121,7 @@
 
   setInterval(tick, 1000);          // 価格変動・配当・生産をすべて1秒刻みで統一
   setInterval(maybeFlavorLog, 3000);
-  setInterval(persist, 10000);      // 10秒ごとに自動保存
+  setInterval(persist, 60000);      // 60秒ごとに自動保存
   window.addEventListener("beforeunload", persist);
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") persist();
