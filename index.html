@@ -879,6 +879,44 @@
   /* ===== prestige upgrade shop (spend stones permanently) ===== */
   .stone-shop-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
 
+  /* ===== investment quick board ===== */
+  .asset-quick-panel {
+    margin: 12px 0 16px;
+    padding: 10px 12px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  .asset-quick-title {
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .asset-quick-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 7px;
+  }
+  .asset-quick-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 8px;
+    align-items: baseline;
+    padding: 7px 9px;
+    border: 1px solid var(--line);
+    background: var(--bg-panel-raised);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .asset-quick-card strong { color: var(--parchment); font-size: 12px; }
+  .asset-quick-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--parchment-dim); }
+  .asset-quick-delta { font-weight: 700; white-space: nowrap; }
+  .asset-quick-card.up { border-color: #3d5735; }
+  .asset-quick-card.up .asset-quick-delta { color: var(--success); }
+  .asset-quick-card.down { border-color: #5e3932; }
+  .asset-quick-card.down .asset-quick-delta { color: var(--danger); }
+
   /* ===== investment tab ===== */
   .asset-card {
     background: var(--bg-panel-raised);
@@ -1118,7 +1156,7 @@
 
   <nav class="tab-nav" id="tab-nav">
     <button class="tab-btn active" data-tab="workshop">工房</button>
-    <button class="tab-btn" data-tab="prestige">転生の間<span class="tab-dot" id="prestige-dot"></span></button>
+    <button class="tab-btn" data-tab="prestige">賢者の石<span class="tab-dot" id="prestige-dot"></span></button>
     <button class="tab-btn" data-tab="invest">錬金取引所<span class="tab-dot" id="invest-dot"></span></button>
     <button class="tab-btn" data-tab="achv">実績</button>
     <button class="tab-btn" data-tab="lane">レーン</button>
@@ -1136,7 +1174,7 @@
             <span class="resource-unit">粒</span>
           </div>
           <div class="rate-row">自動生成 <strong id="rate-display">+0</strong> 粒/秒</div>
-          <div class="mult-row" id="mult-row-display">転生倍率 ×1.00</div>
+          <div class="mult-row" id="mult-row-display">賢者倍率 ×1.00</div>
           <div class="mult-row" id="lane-mult-row-display">レーン倍率 ×1.00</div>
 
           <div class="crucible-wrap">
@@ -1256,10 +1294,10 @@
           <div class="prestige-label">保有する賢者の石</div>
 
           <div class="prestige-detail">現在の生産倍率 <strong id="prestige-current-mult">×1.00</strong></div>
-          <div class="prestige-detail">転生すると得られる石 <strong id="prestige-would-gain">+0</strong> 個</div>
-          <div class="prestige-detail">転生後の倍率 <strong id="prestige-next-mult">×1.00</strong></div>
+          <div class="prestige-detail">今精製すると得られる石 <strong id="prestige-would-gain">+0</strong> 個</div>
+          <div class="prestige-detail">精製後の倍率 <strong id="prestige-next-mult">×1.00</strong></div>
 
-          <button class="prestige-btn" id="prestige-btn" disabled>精霊粉を賢者の石に変える</button>
+          <button class="prestige-btn" id="prestige-btn" disabled>精霊粉を賢者の石に精製する</button>
           <div class="prestige-warn">
             転生すると精霊粉・工房設備・秘伝・大秘儀の所持数はすべて0に戻るが、賢者の石と刻印術（下記）は永続し、すべての生産量に倍率として掛かり続ける。<br>
             石は「これまでに稼いだ精霊粉の総量」から算出されるため、稼ぐほど有利になる。株の保有は転生をまたいで引き継がれる。
@@ -1267,8 +1305,8 @@
         </div>
 
         <div class="panel" style="margin-top:20px;">
-          <div class="panel-header"><h2>転生の記録</h2></div>
-          <div class="panel-desc">工房を何度作り直したか、その軌跡。</div>
+          <div class="panel-header"><h2>石精製の記録</h2></div>
+          <div class="panel-desc">長期の工房運営から賢者の石を精製した記録。</div>
           <div class="prestige-history" id="prestige-history-list">
             <div class="prestige-history-row"><span class="idx">—</span><span>まだ転生していない</span></div>
           </div>
@@ -1280,7 +1318,7 @@
           <h2>刻印術</h2>
           <span class="count" id="stoneshop-owned">保有 0</span>
         </div>
-        <div class="panel-desc">賢者の石そのものを消費して、転生しても消えない永続強化を刻む。ここで使った石は生産倍率の計算からは減らない — 石の「所持数」自体は変わらず、刻印の代金として消費されるのは石の一部という設定。じっくり貯めてから使うのが基本。</div>
+        <div class="panel-desc">賢者の石を消費して、長期進行を支える永続強化を刻む。ここで使った石は生産倍率の計算からは減らない — 石の「所持数」自体は変わらず、刻印の代金として消費されるのは石の一部という設定。じっくり貯めてから使うのが基本。</div>
         <div class="stone-shop-list" id="stoneshop-list"></div>
       </div>
     </div>
@@ -1290,7 +1328,11 @@
   <section class="tab-panel" id="tab-invest">
     <div class="panel" style="margin-bottom:20px;">
       <div class="panel-header"><h2>錬金取引所</h2></div>
-      <div class="panel-desc">精霊粉を株に変え、値動きを見ながら保有する。株価は上下し続けるが、保有株数は配当を生み、放置中も静かに精霊粉へと還元される。値動きはリスクが高いほど大きい。保有株は転生後も残る。</div>
+      <div class="panel-desc">精霊粉を株に変え、値動きを見ながら保有する。株価は30秒ごとに更新され、保有株数は配当を生み、放置中も静かに精霊粉へと還元される。株の保有は石精製後も残る。</div>
+      <div class="asset-quick-panel">
+        <div class="asset-quick-title">相場速報 — 価格 / 上がり幅</div>
+        <div id="asset-quick-board" class="asset-quick-board"></div>
+      </div>
       <div id="asset-list"></div>
       <div class="dividend-row">
         <span>配当合計</span>
@@ -1433,7 +1475,7 @@
   "use strict";
 
   const SAVE_KEY = "alchemist_crucible_save_v2";
-  const SAVE_VERSION = 3;
+  const SAVE_VERSION = 4;
   const MAX_OFFLINE_SECONDS = 8 * 3600; // オフライン進行の上限: 8時間ぶん
 
   /* ================= definitions ================= */
@@ -1468,15 +1510,41 @@
     { id: "t3_worldtree", name: "世界樹の種",   icon: "🌳", unlockAt: 18, baseCost: 1.2e9, costMult: 7.0, multBonus: 0.50, max: 3 },
   ];
 
-  // 刻印術: 賢者の石で買う永続強化(転生しても消えない)
+  // 刻印術: 賢者の石で買う永続強化(石精製後も消えない)
   const stoneShopDefs = [
     { id: "ss_click",   name: "指先の刻印",     icon: "👆", desc: "クリック1回の獲得量が+50%される。", baseCost: 3, costMult: 2.2, max: 8, effect: "clickPct", amount: 0.5 },
     { id: "ss_auto",    name: "永劫の刻印",     icon: "♾️", desc: "自動生産量が+8%される。", baseCost: 2, costMult: 1.9, max: 15, effect: "autoPct", amount: 0.08 },
     { id: "ss_offline", name: "眠りの刻印",     icon: "🌙", desc: "留守中の進行上限が+2時間のびる。", baseCost: 5, costMult: 2.5, max: 6, effect: "offlineHours", amount: 2 },
-    { id: "ss_start",   name: "初期化の刻印",   icon: "🌀", desc: "転生直後、工房設備『小さな精霊』を5体所持した状態から始められる。", baseCost: 12, costMult: 3.0, max: 4, effect: "startSprites", amount: 5 },
+    { id: "ss_start",   name: "初期化の刻印",   icon: "🌀", desc: "精製後も工房設備『小さな精霊』を5体所持した状態から始められる。", baseCost: 12, costMult: 3.0, max: 4, effect: "startSprites", amount: 5 },
     { id: "ss_divi",    name: "豊穣の刻印",     icon: "🪙", desc: "株の配当が+15%される。", baseCost: 6, costMult: 2.3, max: 8, effect: "dividendPct", amount: 0.15 },
   ];
-
+  const longStoneIcons = ["⚗️","🔆","🜂","🜁","🜃","🜄","✦","✧","◇","◆","☉","☾"];
+  const longStoneEffects = [
+    ["clickPct","クリック獲得量",0.01],
+    ["autoPct","自動生産量",0.015],
+    ["offlineHours","放置上限",0.25],
+    ["dividendPct","配当",0.01],
+    ["lanePct","レーン倍率",0.01],
+    ["globalPct","全生産",0.008],
+    ["assetStability","価格変動安定",0.006]
+  ];
+  for (let i = 6; i <= 200; i++) {
+    const idx = (i - 6) % longStoneEffects.length;
+    const [effect, label, amount] = longStoneEffects[idx];
+    const step = i - 5;
+    const scaled = amount * (1 + Math.floor(step / 25) * 0.15);
+    stoneShopDefs.push({
+      id: `ss_${String(i).padStart(3, "0")}`,
+      name: `第${i}式・${label}刻印`,
+      icon: longStoneIcons[step % longStoneIcons.length],
+      desc: `${label}をさらに強化する長期刻印。効果 +${effect === "offlineHours" ? scaled.toFixed(2) + "時間" : ((effect === "assetStability" ? scaled : scaled) * 100).toFixed(2) + "%"}`,
+      baseCost: 10 + Math.floor(i * 2.25),
+      costMult: 1,
+      max: 1,
+      effect,
+      amount: scaled
+    });
+  }
   const milestoneDefs = [
     { at: 50,          label: "50粒 — 最初の一握り" },
     { at: 500,         label: "500粒 — るつぼが温まってきた" },
@@ -1488,20 +1556,46 @@
     { at: 500000000,   label: "5億粒 — 大陸に名が轟く" },
     { at: 5000000000,  label: "50億粒 — 賢者の域を超える" },
     { at: 50000000000, label: "500億粒 — 神話の一頁" },
+    { at: 5e11, label: "5,000億粒 — 星界への扉" },
+    { at: 5e12, label: "5兆粒 — 天上工房" },
+    { at: 5e13, label: "5京粒 — 時空炉の点火" },
+    { at: 5e14, label: "5,000兆粒 — 古代錬金院" },
+    { at: 5e15, label: "5,000京粒 — 世界樹の核" },
+    { at: 5e16, label: "5京京粒 — 虚空錬成域" },
+    { at: 5e18, label: "5百京京粒 — 無限炉心" },
+    { at: 5e20, label: "5垓粒 — 神域工房" },
+    { at: 5e22, label: "5万垓粒 — 恒星錬成局" },
+    { at: 5e24, label: "5秭粒 — 宇宙錬金術" },
+    { at: 5e26, label: "5穣粒 — 次元工房" },
+    { at: 5e28, label: "5溝粒 — 永久機関時代" },
+    { at: 5e30, label: "5澗粒 — 超長期錬金圏" },
+    { at: 5e32, label: "5正粒 — 終わらない工房" }
   ];
-
   const eraDefs = [
-    { at: 0,           label: "見習いの間" },
-    { at: 500,         label: "工房の朝" },
-    { at: 5000,        label: "職人の間" },
-    { at: 50000,       label: "深夜の蒸留室" },
-    { at: 500000,      label: "星読みの塔" },
-    { at: 5000000,     label: "禁書の書庫" },
-    { at: 50000000,    label: "異界の回廊" },
-    { at: 500000000,   label: "深海の祭壇" },
-    { at: 5000000000,  label: "太陽の鍛冶場" },
+    { at: 0, label: "見習いの間" },
+    { at: 500, label: "工房の朝" },
+    { at: 5000, label: "職人の間" },
+    { at: 50000, label: "深夜の蒸留室" },
+    { at: 500000, label: "星読みの塔" },
+    { at: 5000000, label: "禁書の書庫" },
+    { at: 50000000, label: "異界の回廊" },
+    { at: 500000000, label: "深海の祭壇" },
+    { at: 5000000000, label: "太陽の鍛冶場" },
+    { at: 5e11, label: "星海の工房" },
+    { at: 5e12, label: "天上錬成殿" },
+    { at: 5e13, label: "時空炉心" },
+    { at: 5e14, label: "古代錬金院" },
+    { at: 5e15, label: "世界樹中枢" },
+    { at: 5e16, label: "虚空錬成域" },
+    { at: 5e18, label: "無限炉心" },
+    { at: 5e20, label: "神域工房" },
+    { at: 5e22, label: "恒星錬成局" },
+    { at: 5e24, label: "宇宙錬金術局" },
+    { at: 5e26, label: "次元工房" },
+    { at: 5e28, label: "永久機関時代" },
+    { at: 5e30, label: "超長期錬金圏" },
+    { at: 5e32, label: "終わらない工房" }
   ];
-
   const assetDefs = [
     { id: "low",  name: "地脈の欠片", icon: "🪨", risk: "low",  riskLabel: "低リスク",
       price: 10, target: 12,  speed: 0.02,  vol: 0.010, dividendPerShare: 0.02 },
@@ -1543,9 +1637,9 @@
     { id: "a_100_upgrade", name: "大工房", desc: "設備を合計100個所有した。", icon: "🏛️", check: (s, ctx) => ctx.totalUpgradeOwned >= 100 },
     { id: "a_all_types", name: "揃い踏み", desc: "全種類の設備を1つ以上所有した。", icon: "🎯", check: (s, ctx) => ctx.allTypesOwned },
     { id: "a_first_t3", name: "大秘儀への到達", desc: "大秘儀を1つ会得した。", icon: "🌟", check: (s, ctx) => ctx.totalT3Owned >= 1 },
-    { id: "a_first_prestige", name: "生まれ変わり", desc: "初めて転生した。", icon: "💎", check: s => s.prestigeCount >= 1 },
-    { id: "a_5_prestige", name: "円環の探求者", desc: "5回転生した。", icon: "🔄", check: s => s.prestigeCount >= 5 },
-    { id: "a_20_prestige", name: "輪廻の賢者", desc: "20回転生した。", icon: "🌀", check: s => s.prestigeCount >= 20 },
+    { id: "a_first_prestige", name: "初めての石精製", desc: "初めて賢者の石を精製した。", icon: "💎", check: s => s.prestigeCount >= 1 },
+    { id: "a_5_prestige", name: "石精製の探求者", desc: "5回賢者の石を精製した。", icon: "🔄", check: s => s.prestigeCount >= 5 },
+    { id: "a_20_prestige", name: "長期錬金の賢者", desc: "20回賢者の石を精製した。", icon: "🌀", check: s => s.prestigeCount >= 20 },
     { id: "a_10_stones", name: "石の蒐集家", desc: "賢者の石を10個保有した。", icon: "💠", check: s => s.stones >= 10 },
     { id: "a_100_stones", name: "石の長者", desc: "賢者の石を100個保有した。", icon: "💠", check: s => s.stones >= 100 },
     { id: "a_first_stoneshop", name: "最初の刻印", desc: "刻印術を1つ習得した。", icon: "🗿", check: (s, ctx) => ctx.totalStoneShopOwned >= 1 },
@@ -1553,6 +1647,87 @@
     { id: "a_diversify", name: "分散投資", desc: "取引所の全銘柄を保有した。", icon: "🧺", check: (s, ctx) => ctx.allAssetsOwned },
     { id: "a_offline_return", name: "おかえりなさい", desc: "留守中の進行報酬を受け取った。", icon: "🌙", check: s => s.offlineReturnsCount >= 1 },
   ];
+
+  const longAchievementDefs = [];
+  const longEarnedThresholds = [1e13,1e14,1e15,1e16,1e17,1e18,1e19,1e20,1e21,1e22,1e23,1e24,1e25,1e26,1e27,1e28,1e29,1e30,1e31,1e32];
+  longEarnedThresholds.forEach((threshold, i) => {
+    longAchievementDefs.push({
+      id: `a_long_earned_${i + 1}`,
+      name: `長期収益録 ${i + 1}`,
+      desc: `累計${formatThresholdLabel(threshold)}粒を稼いだ。`,
+      icon: ["🌌","✨","🔱","👑"][i % 4],
+      check: s => s.totalEarned >= threshold
+    });
+  });
+  const longUpgradeThresholds = [250,500,1000,2000,5000,10000,25000,50000,100000,250000];
+  longUpgradeThresholds.forEach((threshold, i) => {
+    longAchievementDefs.push({
+      id: `a_long_upgrade_${i + 1}`,
+      name: `大工房拡張 ${i + 1}`,
+      desc: `工房設備を合計${formatThresholdLabel(threshold)}個所有した。`,
+      icon: "🏛️",
+      check: (s, ctx) => ctx.totalUpgradeOwned >= threshold
+    });
+  });
+  const longStoneThresholds = [250,500,1000,2000,5000,10000,20000,40000,80000,120000];
+  longStoneThresholds.forEach((threshold, i) => {
+    longAchievementDefs.push({
+      id: `a_long_stones_${i + 1}`,
+      name: `賢者の石庫 ${i + 1}`,
+      desc: `賢者の石を${formatThresholdLabel(threshold)}個保有した。`,
+      icon: "💠",
+      check: s => s.stones >= threshold
+    });
+  });
+  const longShareThresholds = [10,50,100,500,1000,5000,10000,50000,100000,1000000];
+  longShareThresholds.forEach((threshold, i) => {
+    longAchievementDefs.push({
+      id: `a_long_shares_${i + 1}`,
+      name: `市場資産 ${i + 1}`,
+      desc: `株を合計${formatThresholdLabel(threshold)}株保有した。`,
+      icon: "📈",
+      check: (s, ctx) => ctx.totalSharesOwned >= threshold
+    });
+  });
+  const longLaneThresholds = [10,50,100,500,1000,5000,10000,50000,100000,500000];
+  longLaneThresholds.forEach((threshold, i) => {
+    longAchievementDefs.push({
+      id: `a_long_lane_${i + 1}`,
+      name: `レーン熟練 ${i + 1}`,
+      desc: `レーンのモンスターを合計${formatThresholdLabel(threshold)}体保有した。`,
+      icon: "🐲",
+      check: s => laneOwnedTotal() >= threshold
+    });
+  });
+  const longShopThresholds = [5,10,25,50,75,100,125,150,175,200];
+  longShopThresholds.forEach((threshold, i) => {
+    longAchievementDefs.push({
+      id: `a_long_stoneshop_${i + 1}`,
+      name: `刻印蒐集 ${i + 1}`,
+      desc: `刻印術を合計${formatThresholdLabel(threshold)}回習得した。`,
+      icon: "🗿",
+      check: (s, ctx) => ctx.totalStoneShopOwned >= threshold
+    });
+  });
+  const longPrestigeThresholds = [25,50,100,200,500,1000,2000,5000,10000,20000];
+  longPrestigeThresholds.forEach((threshold, i) => {
+    longAchievementDefs.push({
+      id: `a_long_refine_${i + 1}`,
+      name: `精製記録 ${i + 1}`,
+      desc: `賢者の石を${formatThresholdLabel(threshold)}回精製した。`,
+      icon: "🔄",
+      check: s => s.prestigeCount >= threshold
+    });
+  });
+  longAchievementDefs.push({
+    id: "a_long_masterwork",
+    name: "百選の工房",
+    desc: "100個すべての実績を達成した。",
+    icon: "💯",
+    check: s => s.unlockedAchievements.length >= 99
+  });
+  achievementDefs.push(...longAchievementDefs);
+  if (achievementDefs.length !== 100) throw new Error(`achievementDefs must contain 100 entries, got ${achievementDefs.length}`);
 
   const flavorLines = [
     ["精霊", "小さな精霊が粉をひとつまみ運んできた。"],
@@ -1568,7 +1743,8 @@
   ];
 
   const STONE_BONUS_PCT = 0.03;   // 石1個ごとに+3%
-  const PRESTIGE_DIVISOR = 1e5;   // 石換算の基準値
+  const PRESTIGE_DIVISOR = 1e7;
+  const ASSET_UPDATE_INTERVAL = 30000;   // 石換算の基準値
 
   /* ================= state (runtime, mutable copies) ================= */
   const state = {
@@ -1582,6 +1758,7 @@
     reachedMilestones: [],
     offlineReturnsCount: 0,
     buyQty: 1,                 // 1 | 10 | 25 | 'max'
+    assetUpdateAccumulator: 0,
   };
 
   const upgrades = upgradeDefs.map(d => Object.assign({ owned: 0 }, d));
@@ -1627,22 +1804,36 @@
     return Math.floor(n).toLocaleString("ja-JP");
   }
 
+  function formatThresholdLabel(n) {
+    return n < 1e4 ? formatInt(n) : formatNum(n);
+  }
+
   function stoneShopLevel(id) {
     const s = stoneShop.find(x => x.id === id);
     return s ? s.owned : 0;
   }
 
+  function stoneShopEffectTotal(effect) {
+    return stoneShop.reduce((sum, s) => sum + (s.effect === effect ? s.owned * s.amount : 0), 0);
+  }
+
   function clickBonusMult() {
-    return 1 + stoneShopLevel("ss_click") * stoneShopDefs.find(d => d.id === "ss_click").amount;
+    return 1 + stoneShopLevel("ss_click") * stoneShopDefs.find(d => d.id === "ss_click").amount + stoneShopEffectTotal("clickPct");
   }
   function autoBonusMult() {
-    return 1 + stoneShopLevel("ss_auto") * stoneShopDefs.find(d => d.id === "ss_auto").amount;
+    return 1 + stoneShopLevel("ss_auto") * stoneShopDefs.find(d => d.id === "ss_auto").amount + stoneShopEffectTotal("autoPct");
   }
   function offlineCapHours() {
-    return (MAX_OFFLINE_SECONDS / 3600) + stoneShopLevel("ss_offline") * stoneShopDefs.find(d => d.id === "ss_offline").amount;
+    return (MAX_OFFLINE_SECONDS / 3600) + stoneShopLevel("ss_offline") * stoneShopDefs.find(d => d.id === "ss_offline").amount + stoneShopEffectTotal("offlineHours");
   }
   function dividendBonusMult() {
-    return 1 + stoneShopLevel("ss_divi") * stoneShopDefs.find(d => d.id === "ss_divi").amount;
+    return 1 + stoneShopLevel("ss_divi") * stoneShopDefs.find(d => d.id === "ss_divi").amount + stoneShopEffectTotal("dividendPct");
+  }
+  function globalBonusMult() {
+    return 1 + stoneShopEffectTotal("globalPct");
+  }
+  function assetStabilityMult() {
+    return Math.max(0.2, 1 - Math.min(0.8, stoneShopEffectTotal("assetStability")));
   }
   function startSpritesCount() {
     return stoneShopLevel("ss_start") * stoneShopDefs.find(d => d.id === "ss_start").amount;
@@ -1661,7 +1852,8 @@
   }
 
   function laneBonusMult() {
-    return 1 + laneMonsterDefs.reduce((sum, def) => sum + (def.owned || 0) * (def.bonusPct / 100), 0);
+    const monsterMult = 1 + laneMonsterDefs.reduce((sum, def) => sum + (def.owned || 0) * (def.bonusPct / 100), 0);
+    return monsterMult * (1 + stoneShopEffectTotal("lanePct"));
   }
 
   function lanePurchaseCost(def) {
@@ -1755,11 +1947,11 @@
   }
 
   function totalRate() {
-    return baseRate() * tier2Multiplier() * tier3Multiplier() * stoneMultiplier() * autoBonusMult() * laneBonusMult();
+    return baseRate() * tier2Multiplier() * tier3Multiplier() * stoneMultiplier() * autoBonusMult() * laneBonusMult() * globalBonusMult();
   }
 
   function dividendTotal() {
-    return assets.reduce((sum, a) => sum + a.shares * a.dividendPerShare, 0) * stoneMultiplier() * dividendBonusMult() * laneBonusMult();
+    return assets.reduce((sum, a) => sum + a.shares * a.dividendPerShare, 0) * stoneMultiplier() * dividendBonusMult() * laneBonusMult() * globalBonusMult();
   }
 
   function potentialStones() {
@@ -1802,7 +1994,7 @@
     document.getElementById("essence-count").textContent = formatNum(state.essence);
     document.getElementById("rate-display").textContent = "+" + formatNum(totalRate() + dividendTotal());
     document.getElementById("mult-row-display").textContent =
-      `転生倍率 ×${stoneMultiplier().toFixed(2)}　秘伝倍率 ×${tier2Multiplier().toFixed(2)}　大秘儀倍率 ×${tier3Multiplier().toFixed(2)}`;
+      `賢者倍率 ×${stoneMultiplier().toFixed(2)}　秘伝倍率 ×${tier2Multiplier().toFixed(2)}　大秘儀倍率 ×${tier3Multiplier().toFixed(2)}`;
     const laneLine = document.getElementById("lane-mult-row-display");
     if (laneLine) laneLine.textContent = `×${laneBonusMult().toFixed(2)}`;
   }
@@ -2342,7 +2534,7 @@
     // 消費分は最終的な石ボーナス計算に影響しない別カウンタで管理する。
     permanentStonesSpent += cost;
     s.owned += 1;
-    addLog(`${s.name}を刻んだ。この力は転生しても消えない。`, "刻印");
+    addLog(`${s.name}を刻んだ。この力は石精製後も消えない。`, "刻印");
     renderPrestige();
     renderWorkshopAll();
     renderEssence();
@@ -2363,21 +2555,8 @@
     state.prestigeCount += 1;
     state.prestigeHistory.push({ n: state.prestigeCount, stonesGained: gain, totalAtPrestige: state.totalEarned });
 
-    // reset run-specific progress
-    state.essence = 0;
-    upgrades.forEach(u => u.owned = 0);
-    tier2Upgrades.forEach(t2 => t2.owned = 0);
-    tier3Upgrades.forEach(t3 => t3.owned = 0);
-    // 刻印術「初期化の刻印」があれば、小さな精霊を最初から所持した状態で再開する
-    const startCount = startSpritesCount();
-    if (startCount > 0) {
-      const sprite = upgrades.find(u => u.id === "sprite");
-      if (sprite) sprite.owned = startCount;
-    }
-    // 投資の保有株はプレイヤーの資産として転生後も残す(超長期の実感を持たせるため)
-    // 賢者の石・刻印術も永続
-
-    addLog(`工房を賢者の石${gain}個に変えて生まれ変わった。`, "転生");
+    // 石精製はリセットではなく、現在の工房を維持したまま追加報酬だけを受け取る。
+    addLog(`累計進行から賢者の石${gain}個を精製した。工房はそのまま続く。`, "石精製");
     renderWorkshopAll();
     renderPrestige();
     checkAchievements();
@@ -2389,7 +2568,7 @@
   /* ================= investment ================= */
   function tickAssetPrice(a) {
     const pull = (a.target - a.price) * a.speed;
-    const shock = (assetRand() * 2 - 1) * a.vol * a.price;
+    const shock = (assetRand() * 2 - 1) * a.vol * a.price * assetStabilityMult();
     a.price += pull + shock;
     const floor = a.target * 0.15;
     if (a.price < floor) a.price = floor;
@@ -2408,6 +2587,22 @@
       const y = h - ((v - min) / range) * h;
       return (i === 0 ? "M" : "L") + x.toFixed(1) + "," + y.toFixed(1);
     }).join(" ");
+  }
+
+  function renderAssetQuickBoard() {
+    const board = document.getElementById("asset-quick-board");
+    if (!board) return;
+    board.innerHTML = assets.map(a => {
+      const prev = a.priceHistory.length > 1 ? a.priceHistory[a.priceHistory.length - 2] : a.price;
+      const deltaPct = prev > 0 ? ((a.price - prev) / prev) * 100 : 0;
+      const dir = deltaPct >= 0 ? "up" : "down";
+      const arrow = deltaPct >= 0 ? "▲" : "▼";
+      return `<div class="asset-quick-card ${dir}">
+        <span class="asset-quick-name">${a.icon} ${a.name}</span>
+        <strong>${formatNum(a.price)} 粒</strong>
+        <span class="asset-quick-delta">${arrow} ${Math.abs(deltaPct).toFixed(2)}%</span>
+      </div>`;
+    }).join("");
   }
 
   function renderAssets() {
@@ -2455,6 +2650,7 @@
     });
 
     document.getElementById("dividend-total").textContent = "+" + formatNum(dividendTotal());
+    renderAssetQuickBoard();
 
     const totalShares = assets.reduce((s, a) => s + a.shares, 0);
     const dot = document.getElementById("invest-dot");
@@ -2551,7 +2747,13 @@
       state.totalEarned += gain;
     }
 
-    assets.forEach(a => tickAssetPrice(a));
+    state.assetUpdateAccumulator = (state.assetUpdateAccumulator || 0) + dt;
+    const assetStepSec = ASSET_UPDATE_INTERVAL / 1000;
+    if (state.assetUpdateAccumulator >= assetStepSec) {
+      while (state.assetUpdateAccumulator >= assetStepSec) state.assetUpdateAccumulator -= assetStepSec;
+      assets.forEach(a => tickAssetPrice(a));
+      addLog("取引所の相場が30秒ぶん更新された。", "取引所");
+    }
     tickLaneAutoFlow(dt);
 
     renderWorkshopAll();
@@ -2600,6 +2802,7 @@
         reachedMilestones: state.reachedMilestones,
         offlineReturnsCount: state.offlineReturnsCount,
         permanentStonesSpent: permanentStonesSpent,
+        assetUpdateAccumulator: state.assetUpdateAccumulator,
         laneUnits: laneUnits,
       },
       upgrades: upgrades.map(u => ({ id: u.id, owned: u.owned })),
@@ -2623,6 +2826,7 @@
     state.reachedMilestones = Array.isArray(s.reachedMilestones) ? s.reachedMilestones : [];
     state.offlineReturnsCount = typeof s.offlineReturnsCount === "number" ? s.offlineReturnsCount : 0;
     permanentStonesSpent = typeof s.permanentStonesSpent === "number" ? s.permanentStonesSpent : 0;
+    state.assetUpdateAccumulator = typeof s.assetUpdateAccumulator === "number" ? s.assetUpdateAccumulator : 0;
     laneUnits.length = 0;
     if (Array.isArray(s.laneUnits)) {
       s.laneUnits.forEach(saved => {
@@ -2843,7 +3047,7 @@
   checkAchievements();
   persist();
 
-  setInterval(tick, 1000);          // 価格変動・配当・生産をすべて1秒刻みで統一
+  setInterval(tick, 1000);          // 生産・配当は1秒刻み、投資価格だけ30秒刻み
   setInterval(maybeFlavorLog, 3000);
   setInterval(persist, 60000);      // 60秒ごとに自動保存
   window.addEventListener("beforeunload", persist);
